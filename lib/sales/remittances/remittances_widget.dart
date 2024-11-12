@@ -507,17 +507,19 @@ class _RemittancesWidgetState extends State<RemittancesWidget>
                               height: 628.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Color(0x33000000),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    offset: const Offset(
+                                      3.0,
+                                      3.0,
                                     ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(12.0),
+                                border: Border.all(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                ),
                               ),
                               child: SingleChildScrollView(
                                 child: Column(

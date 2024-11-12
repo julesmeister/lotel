@@ -1010,7 +1010,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 5.0, 16.0),
                     child: StreamBuilder<List<OptionsRecord>>(
                       stream: queryOptionsRecord(
                         queryBuilder: (optionsRecord) => optionsRecord.where(
@@ -1041,9 +1041,18 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
+                            boxShadow: [
+                              BoxShadow(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                offset: const Offset(
+                                  3.0,
+                                  3.0,
+                                ),
+                              )
+                            ],
                             borderRadius: BorderRadius.circular(12.0),
                             border: Border.all(
-                              color: FlutterFlowTheme.of(context).alternate,
+                              color: FlutterFlowTheme.of(context).primaryText,
                               width: 2.0,
                             ),
                           ),
@@ -1181,7 +1190,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                       _model.choicesValue, 'Cash Advance,Absent'))
                     Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 4.0, 0.0),
                       child: StreamBuilder<List<StaffsRecord>>(
                         stream: _model.staffsCashAdvance(
                           requestFn: () => queryStaffsRecord(
@@ -1248,7 +1257,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                             fillColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                             elevation: 2.0,
-                            borderColor: const Color(0xFFE0E3E7),
+                            borderColor:
+                                FlutterFlowTheme.of(context).primaryText,
                             borderWidth: 2.0,
                             borderRadius: 8.0,
                             margin: const EdgeInsetsDirectional.fromSTEB(

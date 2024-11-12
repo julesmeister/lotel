@@ -83,7 +83,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(24.0),
                   child: StreamBuilder<List<HotelSettingsRecord>>(
                     stream: queryHotelSettingsRecord(
                       queryBuilder: (hotelSettingsRecord) =>
@@ -119,9 +119,18 @@ class _LoginWidgetState extends State<LoginWidget> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              offset: const Offset(
+                                3.0,
+                                3.0,
+                              ),
+                            )
+                          ],
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
-                            color: const Color(0xFFF1F4F8),
+                            color: FlutterFlowTheme.of(context).primaryText,
                             width: 2.0,
                           ),
                         ),
@@ -147,7 +156,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 12.0, 0.0, 24.0),
+                                    0.0, 5.0, 0.0, 24.0),
                                 child: Text(
                                   'Choose a hotel to sign in',
                                   textAlign: TextAlign.start,
@@ -156,7 +165,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       .override(
                                         fontFamily: 'Manrope',
                                         color: const Color(0xFF57636C),
-                                        fontSize: 12.0,
+                                        fontSize: 14.0,
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -178,7 +187,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 buttonPosition: RadioButtonPosition.left,
                                 direction: Axis.vertical,
                                 radioButtonColor:
-                                    FlutterFlowTheme.of(context).primary,
+                                    FlutterFlowTheme.of(context).primaryText,
                                 inactiveRadioButtonColor:
                                     FlutterFlowTheme.of(context).secondaryText,
                                 toggleable: false,
@@ -187,7 +196,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 15.0, 8.0, 0.0),
+                                    0.0, 15.0, 0.0, 0.0),
                                 child: TextFormField(
                                   controller: _model.textController,
                                   focusNode: _model.textFieldFocusNode,
@@ -216,7 +225,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .alternate,
+                                            .primaryText,
                                         width: 2.0,
                                       ),
                                       borderRadius: BorderRadius.circular(0.0),
@@ -224,7 +233,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .primary,
+                                            .primaryText,
                                         width: 2.0,
                                       ),
                                       borderRadius: BorderRadius.circular(0.0),
@@ -390,7 +399,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         size: 20.0,
                                       ),
                                       options: FFButtonOptions(
-                                        width: 230.0,
+                                        width: double.infinity,
                                         height: 44.0,
                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 0.0, 0.0),
@@ -408,15 +417,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                         elevation: 0.0,
-                                        borderSide: const BorderSide(
-                                          color: Color(0xFFF1F4F8),
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
                                           width: 2.0,
                                         ),
                                         borderRadius:
-                                            BorderRadius.circular(40.0),
+                                            BorderRadius.circular(10.0),
                                         disabledTextColor:
                                             FlutterFlowTheme.of(context)
-                                                .primaryBackground,
+                                                .secondaryText,
                                       ),
                                     ),
                                   ),

@@ -14,10 +14,12 @@ class OccupiedWidget extends StatefulWidget {
     super.key,
     required this.occupiedRooms,
     required this.vacantRooms,
+    required this.hotelSetting,
   });
 
   final List<RoomsRecord>? occupiedRooms;
   final List<RoomsRecord>? vacantRooms;
+  final HotelSettingsRecord? hotelSetting;
 
   @override
   State<OccupiedWidget> createState() => _OccupiedWidgetState();
@@ -204,32 +206,61 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                               itemCount: rooms.length,
                               itemBuilder: (context, roomsIndex) {
                                 final roomsItem = rooms[roomsIndex];
-                                return Container(
-                                  width: 30.0,
-                                  height: 30.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context).accent3,
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  child: Align(
-                                    alignment: const AlignmentDirectional(0.0, 0.0),
-                                    child: Text(
-                                      roomsItem.number
-                                          .toString()
-                                          .maybeHandleOverflow(
-                                            maxChars: 3,
-                                          ),
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: FlutterFlowTheme.of(context)
-                                                .error,
-                                            fontSize: 30.0,
-                                            letterSpacing: 0.0,
-                                          ),
+                                return InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    // go to checked in
+
+                                    context.pushNamed(
+                                      'CheckedIn',
+                                      queryParameters: {
+                                        'ref': serializeParam(
+                                          roomsItem.reference,
+                                          ParamType.DocumentReference,
+                                        ),
+                                        'booking': serializeParam(
+                                          roomsItem.currentBooking,
+                                          ParamType.DocumentReference,
+                                        ),
+                                        'roomNo': serializeParam(
+                                          roomsItem.number,
+                                          ParamType.int,
+                                        ),
+                                      }.withoutNulls,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    child: Align(
+                                      alignment: const AlignmentDirectional(0.0, 0.0),
+                                      child: Text(
+                                        roomsItem.number
+                                            .toString()
+                                            .maybeHandleOverflow(
+                                              maxChars: 3,
+                                            ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                              fontSize: 30.0,
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
                                     ),
                                   ),
                                 );
@@ -313,34 +344,77 @@ class _OccupiedWidgetState extends State<OccupiedWidget>
                                 itemCount: rooms.length,
                                 itemBuilder: (context, roomsIndex) {
                                   final roomsItem = rooms[roomsIndex];
-                                  return Container(
-                                    width: 30.0,
-                                    height: 30.0,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          FlutterFlowTheme.of(context).accent2,
-                                      borderRadius: BorderRadius.circular(50.0),
-                                    ),
-                                    child: Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
-                                      child: Text(
-                                        roomsItem.number
-                                            .toString()
-                                            .maybeHandleOverflow(
-                                              maxChars: 3,
-                                            ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary,
-                                              fontSize: 30.0,
-                                              letterSpacing: 0.0,
-                                            ),
+                                  return InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                        'CheckIn',
+                                        queryParameters: {
+                                          'price': serializeParam(
+                                            roomsItem.price,
+                                            ParamType.double,
+                                          ),
+                                          'ref': serializeParam(
+                                            roomsItem.reference,
+                                            ParamType.DocumentReference,
+                                          ),
+                                          'roomNo': serializeParam(
+                                            roomsItem.number,
+                                            ParamType.int,
+                                          ),
+                                          'extend': serializeParam(
+                                            false,
+                                            ParamType.bool,
+                                          ),
+                                          'promoOn': serializeParam(
+                                            widget.hotelSetting?.promoOn,
+                                            ParamType.bool,
+                                          ),
+                                          'promoDetail': serializeParam(
+                                            widget.hotelSetting?.promoDetail,
+                                            ParamType.String,
+                                          ),
+                                          'promoDiscount': serializeParam(
+                                            widget.hotelSetting?.promoPercent,
+                                            ParamType.double,
+                                          ),
+                                        }.withoutNulls,
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 30.0,
+                                      height: 30.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .accent2,
+                                        borderRadius:
+                                            BorderRadius.circular(50.0),
+                                      ),
+                                      child: Align(
+                                        alignment:
+                                            const AlignmentDirectional(0.0, 0.0),
+                                        child: Text(
+                                          roomsItem.number
+                                              .toString()
+                                              .maybeHandleOverflow(
+                                                maxChars: 3,
+                                              ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                fontSize: 30.0,
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   );

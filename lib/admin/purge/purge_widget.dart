@@ -549,8 +549,18 @@ class _PurgeWidgetState extends State<PurgeWidget>
                     if (_model.marker == DateRange.Start) {
                       // set start
                       _model.startDate = _model.calendarSelectedDay?.start;
-                      _model.endDate = _model.calendarSelectedDay?.start;
                       safeSetState(() {});
+                      if (_model.endDate != null) {
+                        if (_model.startDate! > _model.endDate!) {
+                          // set new end date
+                          _model.endDate = _model.calendarSelectedDay?.start;
+                          safeSetState(() {});
+                        }
+                      } else {
+                        // set new end date
+                        _model.endDate = _model.calendarSelectedDay?.start;
+                        safeSetState(() {});
+                      }
                     } else {
                       // set end
                       _model.endDate = _model.calendarSelectedDay?.start;

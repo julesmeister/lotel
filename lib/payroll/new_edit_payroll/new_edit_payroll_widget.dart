@@ -428,7 +428,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                         elevation: 0.0,
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
+                                              .primaryText,
                                           width: 1.0,
                                         ),
                                         borderRadius:
@@ -472,8 +472,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                    color:
-                                        FlutterFlowTheme.of(context).alternate,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
                                     width: 2.0,
                                   ),
                                   borderRadius: BorderRadius.circular(0.0),
@@ -539,8 +539,8 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                     ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                    color:
-                                        FlutterFlowTheme.of(context).alternate,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
                                     width: 2.0,
                                   ),
                                   borderRadius: BorderRadius.circular(0.0),
@@ -989,7 +989,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                 salariesList[salariesListIndex];
                             return Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 10.0),
+                                  0.0, 0.0, 5.0, 10.0),
                               child: StreamBuilder<StaffsRecord>(
                                 stream: StaffsRecord.getDocument(
                                     salariesListItem.staff!),
@@ -1092,11 +1092,21 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                            offset: const Offset(
+                                              3.0,
+                                              3.0,
+                                            ),
+                                          )
+                                        ],
                                         borderRadius:
                                             BorderRadius.circular(8.0),
                                         border: Border.all(
                                           color: FlutterFlowTheme.of(context)
-                                              .alternate,
+                                              .primaryText,
                                           width: 2.0,
                                         ),
                                       ),
@@ -1330,7 +1340,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                             ),
                                             Padding(
                                               padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 5.0, 0.0, 0.0),
+                                                  .fromSTEB(0.0, 5.0, 0.0, 5.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
@@ -1375,9 +1385,15 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                 ],
                                               ),
                                             ),
+                                            Divider(
+                                              thickness: 1.0,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
                                             Padding(
                                               padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 5.0, 0.0, 0.0),
+                                                  .fromSTEB(0.0, 5.0, 0.0, 5.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
@@ -1394,7 +1410,7 @@ class _NewEditPayrollWidgetState extends State<NewEditPayrollWidget> {
                                                               'Readex Pro',
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .primary,
+                                                              .primaryText,
                                                           fontSize: 16.0,
                                                           letterSpacing: 0.0,
                                                         ),

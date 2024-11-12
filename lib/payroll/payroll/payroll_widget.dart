@@ -204,9 +204,10 @@ class _PayrollWidgetState extends State<PayrollWidget>
                             const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
                         child: AuthUserStreamWidget(
                           builder: (context) => FlutterFlowIconButton(
-                            borderColor: FlutterFlowTheme.of(context).alternate,
+                            borderColor:
+                                FlutterFlowTheme.of(context).primaryText,
                             borderRadius: 12.0,
-                            borderWidth: 2.0,
+                            borderWidth: 1.0,
                             buttonSize: 40.0,
                             fillColor: FlutterFlowTheme.of(context).info,
                             icon: Icon(
@@ -511,9 +512,9 @@ class _PayrollWidgetState extends State<PayrollWidget>
                             children: [
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 5.0, 0.0, 0.0),
+                                    0.0, 10.0, 0.0, 0.0),
                                 child: Container(
-                                  height: 100.0,
+                                  height: 120.0,
                                   decoration: BoxDecoration(
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
@@ -598,7 +599,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                 return Padding(
                                                   padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
-                                                          0.0, 0.0, 10.0, 0.0),
+                                                          0.0, 0.0, 10.0, 5.0),
                                                   child: FutureBuilder<
                                                       List<AdvancesRecord>>(
                                                     future:
@@ -717,19 +718,36 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                         },
                                                         child: Container(
                                                           width: 160.0,
-                                                          height: 170.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
-                                                                0xFF4B39EF),
-                                                            boxShadow: const [
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondaryBackground,
+                                                            boxShadow: [
                                                               BoxShadow(
-                                                                blurRadius: 5.0,
-                                                                color: Color(
-                                                                    0x23000000),
-                                                                offset: Offset(
-                                                                  0.0,
-                                                                  2.0,
+                                                                color: valueOrDefault<
+                                                                            String>(
+                                                                          formatNumber(
+                                                                            functions.totalOfCAs(staffsCAsAdvancesRecordList.where((e) => e.settled == false).toList()),
+                                                                            formatType:
+                                                                                FormatType.decimal,
+                                                                            decimalType:
+                                                                                DecimalType.automatic,
+                                                                            currency:
+                                                                                'P ',
+                                                                          ),
+                                                                          '0',
+                                                                        ) ==
+                                                                        'P 0'
+                                                                    ? FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText
+                                                                    : FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary,
+                                                                offset: const Offset(
+                                                                  3.0,
+                                                                  3.0,
                                                                 ),
                                                               )
                                                             ],
@@ -737,6 +755,31 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                 BorderRadius
                                                                     .circular(
                                                                         8.0),
+                                                            border: Border.all(
+                                                              color: valueOrDefault<
+                                                                          String>(
+                                                                        formatNumber(
+                                                                          functions.totalOfCAs(staffsCAsAdvancesRecordList
+                                                                              .where((e) => e.settled == false)
+                                                                              .toList()),
+                                                                          formatType:
+                                                                              FormatType.decimal,
+                                                                          decimalType:
+                                                                              DecimalType.automatic,
+                                                                          currency:
+                                                                              'P ',
+                                                                        ),
+                                                                        '0',
+                                                                      ) ==
+                                                                      'P 0'
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                              width: 2.0,
+                                                            ),
                                                           ),
                                                           child: Padding(
                                                             padding:
@@ -774,7 +817,21 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             .headlineSmall
                                                                             .override(
                                                                               fontFamily: 'Outfit',
-                                                                              color: Colors.white,
+                                                                              color: valueOrDefault<Color>(
+                                                                                valueOrDefault<String>(
+                                                                                          formatNumber(
+                                                                                            functions.totalOfCAs(staffsCAsAdvancesRecordList.where((e) => e.settled == false).toList()),
+                                                                                            formatType: FormatType.decimal,
+                                                                                            decimalType: DecimalType.automatic,
+                                                                                            currency: 'P ',
+                                                                                          ),
+                                                                                          '0',
+                                                                                        ) ==
+                                                                                        'P 0'
+                                                                                    ? FlutterFlowTheme.of(context).primaryText
+                                                                                    : FlutterFlowTheme.of(context).primary,
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                              ),
                                                                               fontSize: 24.0,
                                                                               letterSpacing: 0.0,
                                                                               fontWeight: FontWeight.w500,
@@ -788,14 +845,28 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                             0.0),
                                                                         child:
                                                                             Text(
-                                                                          'Unpaid CAs:',
+                                                                          'Unpaid CAs',
                                                                           maxLines:
                                                                               1,
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .titleSmall
                                                                               .override(
                                                                                 fontFamily: 'Plus Jakarta Sans',
-                                                                                color: const Color(0x9AFFFFFF),
+                                                                                color: valueOrDefault<Color>(
+                                                                                  valueOrDefault<String>(
+                                                                                            formatNumber(
+                                                                                              functions.totalOfCAs(staffsCAsAdvancesRecordList.where((e) => e.settled == false).toList()),
+                                                                                              formatType: FormatType.decimal,
+                                                                                              decimalType: DecimalType.automatic,
+                                                                                              currency: 'P ',
+                                                                                            ),
+                                                                                            '0',
+                                                                                          ) ==
+                                                                                          'P 0'
+                                                                                      ? FlutterFlowTheme.of(context).primaryText
+                                                                                      : FlutterFlowTheme.of(context).primary,
+                                                                                  FlutterFlowTheme.of(context).primaryText,
+                                                                                ),
                                                                                 fontSize: 12.0,
                                                                                 letterSpacing: 0.0,
                                                                                 fontWeight: FontWeight.w500,
@@ -826,7 +897,21 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                               .displaySmall
                                                                               .override(
                                                                                 fontFamily: 'Outfit',
-                                                                                color: Colors.white,
+                                                                                color: valueOrDefault<Color>(
+                                                                                  valueOrDefault<String>(
+                                                                                            formatNumber(
+                                                                                              functions.totalOfCAs(staffsCAsAdvancesRecordList.where((e) => e.settled == false).toList()),
+                                                                                              formatType: FormatType.decimal,
+                                                                                              decimalType: DecimalType.automatic,
+                                                                                              currency: 'P ',
+                                                                                            ),
+                                                                                            '0',
+                                                                                          ) ==
+                                                                                          'P 0'
+                                                                                      ? FlutterFlowTheme.of(context).primaryText
+                                                                                      : FlutterFlowTheme.of(context).primary,
+                                                                                  FlutterFlowTheme.of(context).primaryText,
+                                                                                ),
                                                                                 fontSize: 16.0,
                                                                                 letterSpacing: 0.0,
                                                                                 fontWeight: FontWeight.w600,
@@ -865,9 +950,9 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                 FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
-                                                      .alternate,
+                                                      .primaryText,
                                               borderRadius: 12.0,
-                                              borderWidth: 2.0,
+                                              borderWidth: 1.0,
                                               buttonSize: 40.0,
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
@@ -1166,13 +1251,25 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .secondaryBackground,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      offset: const Offset(
+                                                        3.0,
+                                                        3.0,
+                                                      ),
+                                                    )
+                                                  ],
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           8.0),
                                                   border: Border.all(
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .alternate,
+                                                        .primaryText,
                                                     width: 2.0,
                                                   ),
                                                 ),
@@ -1217,12 +1314,6 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                     .textScaler,
                                                                 text: TextSpan(
                                                                   children: [
-                                                                    const TextSpan(
-                                                                      text:
-                                                                          'Fortnight: ',
-                                                                      style:
-                                                                          TextStyle(),
-                                                                    ),
                                                                     TextSpan(
                                                                       text: listViewPayrollsRecord
                                                                           .fortnight,
@@ -1233,6 +1324,12 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                         fontWeight:
                                                                             FontWeight.bold,
                                                                       ),
+                                                                    ),
+                                                                    const TextSpan(
+                                                                      text:
+                                                                          ' fortnight',
+                                                                      style:
+                                                                          TextStyle(),
                                                                     )
                                                                   ],
                                                                   style: FlutterFlowTheme.of(
@@ -1332,7 +1429,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                           ? FlutterFlowTheme.of(context)
                                                                               .error
                                                                           : FlutterFlowTheme.of(context)
-                                                                              .secondary,
+                                                                              .success,
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),

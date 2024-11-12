@@ -400,9 +400,28 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondary,
+                                                  offset: const Offset(
+                                                    3.0,
+                                                    3.0,
+                                                  ),
+                                                )
+                                              ],
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                width: 2.0,
+                                              ),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(12.0),
@@ -426,8 +445,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
-                                                                0x98FFFFFF),
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .accent2,
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -436,10 +456,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           alignment:
                                                               const AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
-                                                            color: Colors.white,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondary,
                                                             size: 20.0,
                                                           ),
                                                         ),
@@ -480,8 +502,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     fontSize:
                                                                         18.0,
                                                                     letterSpacing:
@@ -501,8 +524,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
-                                                                        0x98FFFFFF),
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
@@ -531,8 +555,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
-                                                                  0x98FFFFFF),
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .accent2,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -541,11 +566,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             alignment:
                                                                 const AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondary,
                                                               size: 20.0,
                                                             ),
                                                           ),
@@ -589,8 +615,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: Colors
-                                                                          .white,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       fontSize:
                                                                           18.0,
                                                                       letterSpacing:
@@ -611,8 +638,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
-                                                                          0x98FFFFFF),
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
@@ -1781,9 +1809,28 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondary,
+                                                  offset: const Offset(
+                                                    3.0,
+                                                    3.0,
+                                                  ),
+                                                )
+                                              ],
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                width: 2.0,
+                                              ),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(12.0),
@@ -1807,8 +1854,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
-                                                                0x98FFFFFF),
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .accent2,
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -1817,10 +1865,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           alignment:
                                                               const AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
-                                                            color: Colors.white,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondary,
                                                             size: 20.0,
                                                           ),
                                                         ),
@@ -1861,8 +1911,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     fontSize:
                                                                         18.0,
                                                                     letterSpacing:
@@ -1882,8 +1933,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
-                                                                        0x98FFFFFF),
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
@@ -1912,8 +1964,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
-                                                                  0x98FFFFFF),
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .accent2,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -1922,11 +1975,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             alignment:
                                                                 const AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondary,
                                                               size: 20.0,
                                                             ),
                                                           ),
@@ -1972,8 +2026,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: Colors
-                                                                          .white,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       fontSize:
                                                                           18.0,
                                                                       letterSpacing:
@@ -1994,8 +2049,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
-                                                                          0x98FFFFFF),
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
@@ -2400,9 +2456,28 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondary,
+                                                  offset: const Offset(
+                                                    3.0,
+                                                    3.0,
+                                                  ),
+                                                )
+                                              ],
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                width: 2.0,
+                                              ),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(12.0),
@@ -2426,8 +2501,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
-                                                                0x98FFFFFF),
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .accent2,
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -2436,10 +2512,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           alignment:
                                                               const AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
-                                                            color: Colors.white,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondary,
                                                             size: 20.0,
                                                           ),
                                                         ),
@@ -2473,8 +2551,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     fontSize:
                                                                         18.0,
                                                                     letterSpacing:
@@ -2494,8 +2573,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
-                                                                        0x98FFFFFF),
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
@@ -2524,8 +2604,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
-                                                                  0x98FFFFFF),
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .accent2,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -2534,11 +2615,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             alignment:
                                                                 const AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondary,
                                                               size: 20.0,
                                                             ),
                                                           ),
@@ -2581,8 +2663,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: Colors
-                                                                          .white,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       fontSize:
                                                                           18.0,
                                                                       letterSpacing:
@@ -2603,8 +2686,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
-                                                                          0x98FFFFFF),
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),
@@ -2972,9 +3056,28 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                           child: Container(
                                             width: double.infinity,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF39D2C0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondary,
+                                                  offset: const Offset(
+                                                    3.0,
+                                                    3.0,
+                                                  ),
+                                                )
+                                              ],
                                               borderRadius:
                                                   BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
+                                                width: 2.0,
+                                              ),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(12.0),
@@ -2998,8 +3101,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           height: 36.0,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color(
-                                                                0x98FFFFFF),
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .accent2,
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -3008,10 +3112,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                           alignment:
                                                               const AlignmentDirectional(
                                                                   0.0, 0.0),
-                                                          child: const Icon(
+                                                          child: Icon(
                                                             Icons
                                                                 .money_off_sharp,
-                                                            color: Colors.white,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondary,
                                                             size: 20.0,
                                                           ),
                                                         ),
@@ -3045,8 +3151,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: Colors
-                                                                        .white,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     fontSize:
                                                                         18.0,
                                                                     letterSpacing:
@@ -3066,8 +3173,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                   .override(
                                                                     fontFamily:
                                                                         'Readex Pro',
-                                                                    color: const Color(
-                                                                        0x98FFFFFF),
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                     letterSpacing:
                                                                         0.0,
                                                                   ),
@@ -3096,8 +3204,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             height: 36.0,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: const Color(
-                                                                  0x98FFFFFF),
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .accent2,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -3106,11 +3215,12 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                             alignment:
                                                                 const AlignmentDirectional(
                                                                     0.0, 0.0),
-                                                            child: const Icon(
+                                                            child: Icon(
                                                               Icons
                                                                   .attach_money_outlined,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondary,
                                                               size: 20.0,
                                                             ),
                                                           ),
@@ -3153,8 +3263,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: Colors
-                                                                          .white,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       fontSize:
                                                                           18.0,
                                                                       letterSpacing:
@@ -3175,8 +3286,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Readex Pro',
-                                                                      color: const Color(
-                                                                          0x98FFFFFF),
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
                                                                       letterSpacing:
                                                                           0.0,
                                                                     ),

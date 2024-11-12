@@ -414,9 +414,9 @@ class _BillFormWidgetState extends State<BillFormWidget>
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.calendar_month,
-                            color: Color(0xFF04B9F9),
+                            color: FlutterFlowTheme.of(context).primaryText,
                             size: 35.0,
                           ),
                           Padding(
@@ -686,7 +686,7 @@ class _BillFormWidgetState extends State<BillFormWidget>
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 5.0, 16.0),
                     child: StreamBuilder<List<OptionsRecord>>(
                       stream: queryOptionsRecord(
                         queryBuilder: (optionsRecord) => optionsRecord.where(
@@ -717,9 +717,18 @@ class _BillFormWidgetState extends State<BillFormWidget>
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
+                            boxShadow: [
+                              BoxShadow(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                offset: const Offset(
+                                  3.0,
+                                  3.0,
+                                ),
+                              )
+                            ],
                             borderRadius: BorderRadius.circular(12.0),
                             border: Border.all(
-                              color: FlutterFlowTheme.of(context).alternate,
+                              color: FlutterFlowTheme.of(context).primaryText,
                               width: 2.0,
                             ),
                           ),

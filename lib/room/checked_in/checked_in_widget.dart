@@ -119,7 +119,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
               ),
               actions: const [],
               centerTitle: false,
-              elevation: 2.0,
+              elevation: 0.0,
             ),
             body: SafeArea(
               top: true,
@@ -153,7 +153,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                               Align(
                                 alignment: const AlignmentDirectional(0.0, -1.0),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Container(
                                     width: double.infinity,
                                     constraints: const BoxConstraints(
@@ -161,10 +161,6 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                     ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12.0),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .alternate,
-                                      ),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
@@ -180,112 +176,87 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 0.0, 15.0),
-                                                  child: Text(
-                                                    'Booking Details',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .headlineMedium
-                                                        .override(
-                                                          fontFamily: 'Outfit',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 8.0, 0.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        'Room',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                      ),
-                                                      Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Text(
-                                                            (int room) {
-                                                              return "Room $room";
-                                                            }(valueOrDefault<
-                                                                int>(
-                                                              widget.roomNo,
-                                                              0,
-                                                            )),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      'Room',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
                                                           ),
-                                                          if (!((checkedInBookingsRecord
-                                                                      .status ==
-                                                                  'out') ||
-                                                              (widget.ref ==
-                                                                  null)))
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          5.0,
-                                                                          0.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                              child: InkWell(
-                                                                splashColor: Colors
-                                                                    .transparent,
-                                                                focusColor: Colors
-                                                                    .transparent,
-                                                                hoverColor: Colors
-                                                                    .transparent,
-                                                                highlightColor:
-                                                                    Colors
-                                                                        .transparent,
-                                                                onTap:
-                                                                    () async {
-                                                                  _model.showMoveRoom =
-                                                                      !_model
-                                                                          .showMoveRoom;
-                                                                  safeSetState(
-                                                                      () {});
-                                                                },
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .move_down,
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText,
-                                                                  size: 14.0,
-                                                                ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Text(
+                                                          (int room) {
+                                                            return "Room $room";
+                                                          }(valueOrDefault<int>(
+                                                            widget.roomNo,
+                                                            0,
+                                                          )),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Readex Pro',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                        if (!((checkedInBookingsRecord
+                                                                    .status ==
+                                                                'out') ||
+                                                            (widget.ref ==
+                                                                null)))
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        5.0,
+                                                                        0.0,
+                                                                        0.0,
+                                                                        0.0),
+                                                            child: InkWell(
+                                                              splashColor: Colors
+                                                                  .transparent,
+                                                              focusColor: Colors
+                                                                  .transparent,
+                                                              hoverColor: Colors
+                                                                  .transparent,
+                                                              highlightColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              onTap: () async {
+                                                                _model.showMoveRoom =
+                                                                    !_model
+                                                                        .showMoveRoom;
+                                                                safeSetState(
+                                                                    () {});
+                                                              },
+                                                              child: Icon(
+                                                                Icons.move_down,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                size: 14.0,
                                                               ),
                                                             ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
                                                 if (_model.showMoveRoom)
                                                   Padding(
@@ -1236,7 +1207,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                     BorderSide(
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .alternate,
+                                                                      .primaryText,
                                                                   width: 2.0,
                                                                 ),
                                                                 borderRadius:
@@ -1552,7 +1523,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                         2.0,
                                                                     borderColor:
                                                                         FlutterFlowTheme.of(context)
-                                                                            .alternate,
+                                                                            .primaryText,
                                                                     borderWidth:
                                                                         2.0,
                                                                     borderRadius:
@@ -1746,7 +1717,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                               OutlineInputBorder(
                                                                             borderSide:
                                                                                 BorderSide(
-                                                                              color: FlutterFlowTheme.of(context).alternate,
+                                                                              color: FlutterFlowTheme.of(context).primaryText,
                                                                               width: 2.0,
                                                                             ),
                                                                             borderRadius:
@@ -1811,7 +1782,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                               const EdgeInsetsDirectional
                                                                   .fromSTEB(
                                                                       0.0,
-                                                                      5.0,
+                                                                      10.0,
                                                                       0.0,
                                                                       0.0),
                                                           child: Row(
@@ -2328,6 +2299,18 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .secondaryBackground,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                      offset:
+                                                                          const Offset(
+                                                                        3.0,
+                                                                        3.0,
+                                                                      ),
+                                                                    )
+                                                                  ],
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
@@ -2336,7 +2319,7 @@ class _CheckedInWidgetState extends State<CheckedInWidget> {
                                                                       .all(
                                                                     color: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .alternate,
+                                                                        .primaryText,
                                                                     width: 2.0,
                                                                   ),
                                                                 ),

@@ -290,22 +290,28 @@ class _RemittanceSpecificTransactionsWidgetState
                                   children: [
                                     Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 12.0, 12.0, 12.0),
+                                          16.0, 12.0, 16.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
-                                              blurRadius: 4.0,
-                                              color: Color(0x34090F13),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              offset: const Offset(
+                                                3.0,
+                                                3.0,
                                               ),
                                             )
                                           ],
                                           borderRadius:
                                               BorderRadius.circular(12.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondary,
+                                            width: 2.0,
+                                          ),
                                         ),
                                         child: Padding(
                                           padding:
@@ -326,9 +332,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                     bottomRight:
                                                         Radius.circular(0.0),
                                                     topLeft:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                     topRight:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                   ),
                                                 ),
                                                 child: Padding(
@@ -1531,22 +1537,28 @@ class _RemittanceSpecificTransactionsWidgetState
                                   children: [
                                     Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 12.0, 12.0, 12.0),
+                                          16.0, 12.0, 16.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
-                                              blurRadius: 4.0,
-                                              color: Color(0x34090F13),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              offset: const Offset(
+                                                3.0,
+                                                3.0,
                                               ),
                                             )
                                           ],
                                           borderRadius:
                                               BorderRadius.circular(12.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondary,
+                                            width: 2.0,
+                                          ),
                                         ),
                                         child: Padding(
                                           padding:
@@ -1567,9 +1579,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                     bottomRight:
                                                         Radius.circular(0.0),
                                                     topLeft:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                     topRight:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                   ),
                                                 ),
                                                 child: Padding(
@@ -2049,22 +2061,28 @@ class _RemittanceSpecificTransactionsWidgetState
                                   children: [
                                     Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 12.0, 12.0, 12.0),
+                                          16.0, 12.0, 16.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
-                                              blurRadius: 4.0,
-                                              color: Color(0x34090F13),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              offset: const Offset(
+                                                3.0,
+                                                3.0,
                                               ),
                                             )
                                           ],
                                           borderRadius:
                                               BorderRadius.circular(12.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondary,
+                                            width: 2.0,
+                                          ),
                                         ),
                                         child: Padding(
                                           padding:
@@ -2085,9 +2103,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                     bottomRight:
                                                         Radius.circular(0.0),
                                                     topLeft:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                     topRight:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                   ),
                                                 ),
                                                 child: Padding(
@@ -2495,22 +2513,28 @@ class _RemittanceSpecificTransactionsWidgetState
                                   children: [
                                     Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 12.0, 12.0, 12.0),
+                                          16.0, 12.0, 16.0, 12.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          boxShadow: const [
+                                          boxShadow: [
                                             BoxShadow(
-                                              blurRadius: 4.0,
-                                              color: Color(0x34090F13),
-                                              offset: Offset(
-                                                0.0,
-                                                2.0,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              offset: const Offset(
+                                                3.0,
+                                                3.0,
                                               ),
                                             )
                                           ],
                                           borderRadius:
                                               BorderRadius.circular(12.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondary,
+                                            width: 2.0,
+                                          ),
                                         ),
                                         child: Padding(
                                           padding:
@@ -2531,9 +2555,9 @@ class _RemittanceSpecificTransactionsWidgetState
                                                     bottomRight:
                                                         Radius.circular(0.0),
                                                     topLeft:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                     topRight:
-                                                        Radius.circular(12.0),
+                                                        Radius.circular(9.0),
                                                   ),
                                                 ),
                                                 child: Padding(

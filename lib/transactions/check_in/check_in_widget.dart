@@ -1549,20 +1549,19 @@ class _CheckInWidgetState extends State<CheckInWidget>
                         decoration: BoxDecoration(
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              blurRadius: 4.0,
-                              color: Color(0x55000000),
-                              offset: Offset(
-                                0.0,
-                                2.0,
+                              color: FlutterFlowTheme.of(context).primary,
+                              offset: const Offset(
+                                3.0,
+                                3.0,
                               ),
                             )
                           ],
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
-                            color: FlutterFlowTheme.of(context).alternate,
-                            width: 1.0,
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2.0,
                           ),
                         ),
                         child: Padding(

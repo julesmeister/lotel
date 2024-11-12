@@ -1008,17 +1008,37 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Color(0x34090F13),
-                                    offset: Offset(
-                                      0.0,
-                                      1.0,
+                                    color: (String change) {
+                                      return change.contains("-");
+                                    }(functions.metricChange(
+                                            _model.rooms,
+                                            'rooms',
+                                            _model.prevMetrics.toList(),
+                                            _model.hotel))
+                                        ? FlutterFlowTheme.of(context).error
+                                        : FlutterFlowTheme.of(context)
+                                            .secondary,
+                                    offset: const Offset(
+                                      3.0,
+                                      3.0,
                                     ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(12.0),
+                                border: Border.all(
+                                  color: (String change) {
+                                    return change.contains("-");
+                                  }(functions.metricChange(
+                                          _model.rooms,
+                                          'rooms',
+                                          _model.prevMetrics.toList(),
+                                          _model.hotel))
+                                      ? FlutterFlowTheme.of(context).error
+                                      : FlutterFlowTheme.of(context).secondary,
+                                  width: 2.0,
+                                ),
                               ),
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -1042,8 +1062,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         borderRadius: const BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
-                                          topLeft: Radius.circular(12.0),
-                                          topRight: Radius.circular(12.0),
+                                          topLeft: Radius.circular(9.0),
+                                          topRight: Radius.circular(9.0),
                                         ),
                                       ),
                                       child: Padding(
@@ -1391,17 +1411,37 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Color(0x34090F13),
-                                    offset: Offset(
-                                      0.0,
-                                      1.0,
+                                    color: (String change) {
+                                      return change.contains("-");
+                                    }(functions.metricChange(
+                                            _model.expenses,
+                                            'expenses',
+                                            _model.prevMetrics.toList(),
+                                            _model.hotel))
+                                        ? FlutterFlowTheme.of(context).error
+                                        : FlutterFlowTheme.of(context)
+                                            .secondary,
+                                    offset: const Offset(
+                                      3.0,
+                                      3.0,
                                     ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(12.0),
+                                border: Border.all(
+                                  color: (String change) {
+                                    return change.contains("-");
+                                  }(functions.metricChange(
+                                          _model.expenses,
+                                          'expenses',
+                                          _model.prevMetrics.toList(),
+                                          _model.hotel))
+                                      ? FlutterFlowTheme.of(context).error
+                                      : FlutterFlowTheme.of(context).secondary,
+                                  width: 2.0,
+                                ),
                               ),
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -1425,8 +1465,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         borderRadius: const BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
-                                          topLeft: Radius.circular(12.0),
-                                          topRight: Radius.circular(12.0),
+                                          topLeft: Radius.circular(9.0),
+                                          topRight: Radius.circular(9.0),
                                         ),
                                       ),
                                       child: Padding(
@@ -1675,17 +1715,37 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Color(0x34090F13),
-                                    offset: Offset(
-                                      0.0,
-                                      1.0,
+                                    color: (String change) {
+                                      return change.contains("-");
+                                    }(functions.metricChange(
+                                            _model.bills,
+                                            'bills',
+                                            _model.prevMetrics.toList(),
+                                            _model.hotel))
+                                        ? FlutterFlowTheme.of(context).error
+                                        : FlutterFlowTheme.of(context)
+                                            .secondary,
+                                    offset: const Offset(
+                                      3.0,
+                                      3.0,
                                     ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(12.0),
+                                border: Border.all(
+                                  color: (String change) {
+                                    return change.contains("-");
+                                  }(functions.metricChange(
+                                          _model.bills,
+                                          'bills',
+                                          _model.prevMetrics.toList(),
+                                          _model.hotel))
+                                      ? FlutterFlowTheme.of(context).error
+                                      : FlutterFlowTheme.of(context).secondary,
+                                  width: 2.0,
+                                ),
                               ),
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -1709,8 +1769,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         borderRadius: const BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
-                                          topLeft: Radius.circular(12.0),
-                                          topRight: Radius.circular(12.0),
+                                          topLeft: Radius.circular(9.0),
+                                          topRight: Radius.circular(9.0),
                                         ),
                                       ),
                                       child: Padding(
@@ -2018,17 +2078,37 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Color(0x34090F13),
-                                    offset: Offset(
-                                      0.0,
-                                      1.0,
+                                    color: (String change) {
+                                      return change.contains("-");
+                                    }(functions.metricChange(
+                                            _model.goods,
+                                            'goods',
+                                            _model.prevMetrics.toList(),
+                                            _model.hotel))
+                                        ? FlutterFlowTheme.of(context).error
+                                        : FlutterFlowTheme.of(context)
+                                            .secondary,
+                                    offset: const Offset(
+                                      3.0,
+                                      3.0,
                                     ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(12.0),
+                                border: Border.all(
+                                  color: (String change) {
+                                    return change.contains("-");
+                                  }(functions.metricChange(
+                                          _model.goods,
+                                          'goods',
+                                          _model.prevMetrics.toList(),
+                                          _model.hotel))
+                                      ? FlutterFlowTheme.of(context).error
+                                      : FlutterFlowTheme.of(context).secondary,
+                                  width: 2.0,
+                                ),
                               ),
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -2052,8 +2132,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         borderRadius: const BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
-                                          topLeft: Radius.circular(12.0),
-                                          topRight: Radius.circular(12.0),
+                                          topLeft: Radius.circular(9.0),
+                                          topRight: Radius.circular(9.0),
                                         ),
                                       ),
                                       child: Padding(
@@ -2297,17 +2377,37 @@ class _MetricsWidgetState extends State<MetricsWidget>
                               width: 230.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    blurRadius: 4.0,
-                                    color: Color(0x34090F13),
-                                    offset: Offset(
-                                      0.0,
-                                      1.0,
+                                    color: (String change) {
+                                      return change.contains("-");
+                                    }(functions.metricChange(
+                                            _model.salaries,
+                                            'salaries',
+                                            _model.prevMetrics.toList(),
+                                            _model.hotel))
+                                        ? FlutterFlowTheme.of(context).error
+                                        : FlutterFlowTheme.of(context)
+                                            .secondary,
+                                    offset: const Offset(
+                                      3.0,
+                                      3.0,
                                     ),
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(12.0),
+                                border: Border.all(
+                                  color: (String change) {
+                                    return change.contains("-");
+                                  }(functions.metricChange(
+                                          _model.salaries,
+                                          'salaries',
+                                          _model.prevMetrics.toList(),
+                                          _model.hotel))
+                                      ? FlutterFlowTheme.of(context).error
+                                      : FlutterFlowTheme.of(context).secondary,
+                                  width: 2.0,
+                                ),
                               ),
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -2331,8 +2431,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         borderRadius: const BorderRadius.only(
                                           bottomLeft: Radius.circular(0.0),
                                           bottomRight: Radius.circular(0.0),
-                                          topLeft: Radius.circular(12.0),
-                                          topRight: Radius.circular(12.0),
+                                          topLeft: Radius.circular(10.0),
+                                          topRight: Radius.circular(10.0),
                                         ),
                                       ),
                                       child: Padding(
@@ -2483,17 +2583,36 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             width: 230.0,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              boxShadow: const [
+                              boxShadow: [
                                 BoxShadow(
-                                  blurRadius: 4.0,
-                                  color: Color(0x34090F13),
-                                  offset: Offset(
-                                    0.0,
-                                    1.0,
+                                  color: (String change) {
+                                    return change.contains("-");
+                                  }(functions.metricChange(
+                                          _model.net,
+                                          'net',
+                                          _model.prevMetrics.toList(),
+                                          _model.hotel))
+                                      ? FlutterFlowTheme.of(context).error
+                                      : FlutterFlowTheme.of(context).secondary,
+                                  offset: const Offset(
+                                    3.0,
+                                    3.0,
                                   ),
                                 )
                               ],
                               borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(
+                                color: (String change) {
+                                  return change.contains("-");
+                                }(functions.metricChange(
+                                        _model.net,
+                                        'net',
+                                        _model.prevMetrics.toList(),
+                                        _model.hotel))
+                                    ? FlutterFlowTheme.of(context).error
+                                    : FlutterFlowTheme.of(context).secondary,
+                                width: 2.0,
+                              ),
                             ),
                             child: Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -2517,8 +2636,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(0.0),
                                         bottomRight: Radius.circular(0.0),
-                                        topLeft: Radius.circular(12.0),
-                                        topRight: Radius.circular(12.0),
+                                        topLeft: Radius.circular(9.0),
+                                        topRight: Radius.circular(9.0),
                                       ),
                                     ),
                                     child: Padding(
@@ -3015,17 +3134,22 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  boxShadow: const [
+                                  boxShadow: [
                                     BoxShadow(
-                                      blurRadius: 4.0,
-                                      color: Color(0x34090F13),
-                                      offset: Offset(
-                                        0.0,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      offset: const Offset(
+                                        2.0,
                                         2.0,
                                       ),
                                     )
                                   ],
                                   borderRadius: BorderRadius.circular(12.0),
+                                  border: Border.all(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    width: 2.0,
+                                  ),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
@@ -3038,12 +3162,12 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                         height: 50.0,
                                         decoration: BoxDecoration(
                                           color: FlutterFlowTheme.of(context)
-                                              .primary,
+                                              .primaryText,
                                           borderRadius: const BorderRadius.only(
                                             bottomLeft: Radius.circular(0.0),
                                             bottomRight: Radius.circular(0.0),
-                                            topLeft: Radius.circular(12.0),
-                                            topRight: Radius.circular(12.0),
+                                            topLeft: Radius.circular(9.0),
+                                            topRight: Radius.circular(9.0),
                                           ),
                                         ),
                                         child: Padding(
@@ -3114,11 +3238,11 @@ class _MetricsWidgetState extends State<MetricsWidget>
                                               animateFromLastPercent: true,
                                               progressColor:
                                                   FlutterFlowTheme.of(context)
-                                                      .primary,
+                                                      .primaryText,
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
                                                       .accent4,
-                                              barRadius: const Radius.circular(10.0),
+                                              barRadius: const Radius.circular(3.0),
                                               padding: EdgeInsets.zero,
                                             ),
                                           ),

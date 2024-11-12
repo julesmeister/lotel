@@ -347,11 +347,21 @@ class _RoomListWidgetState extends State<RoomListWidget> {
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      offset: const Offset(
+                                        3.0,
+                                        3.0,
+                                      ),
+                                    )
+                                  ],
                                   borderRadius: BorderRadius.circular(12.0),
                                   border: Border.all(
-                                    color:
-                                        FlutterFlowTheme.of(context).alternate,
-                                    width: 1.0,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    width: 2.0,
                                   ),
                                 ),
                                 child: Row(

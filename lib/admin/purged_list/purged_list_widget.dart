@@ -332,11 +332,10 @@ class _PurgedListWidgetState extends State<PurgedListWidget>
                                                       'Start',
                                                       style: FlutterFlowTheme
                                                               .of(context)
-                                                          .bodyLarge
+                                                          .labelMedium
                                                           .override(
                                                             fontFamily:
                                                                 'Readex Pro',
-                                                            fontSize: 14.0,
                                                             letterSpacing: 0.0,
                                                           ),
                                                     ),
@@ -374,11 +373,10 @@ class _PurgedListWidgetState extends State<PurgedListWidget>
                                                       'End',
                                                       style: FlutterFlowTheme
                                                               .of(context)
-                                                          .bodyLarge
+                                                          .labelMedium
                                                           .override(
                                                             fontFamily:
                                                                 'Readex Pro',
-                                                            fontSize: 14.0,
                                                             letterSpacing: 0.0,
                                                           ),
                                                     ),

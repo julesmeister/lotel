@@ -2111,7 +2111,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 (FFAppState().lockDown == false))
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 12.0, 0.0),
+                                    24.0, 0.0, 24.0, 0.0),
                                 child: AuthUserStreamWidget(
                                   builder: (context) => Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -2120,29 +2120,19 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 0.0, 12.0, 0.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Align(
-                                              alignment: const AlignmentDirectional(
-                                                  0.0, 0.0),
-                                              child: Text(
-                                                'Metrics',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineSmall
-                                                        .override(
-                                                          fontFamily: 'Outfit',
-                                                          letterSpacing: 0.0,
-                                                        ),
+                                      Align(
+                                        alignment:
+                                            const AlignmentDirectional(0.0, 0.0),
+                                        child: Text(
+                                          'Metrics',
+                                          style: FlutterFlowTheme.of(context)
+                                              .headlineSmall
+                                              .override(
+                                                fontFamily: 'Plus Jakarta Sans',
+                                                fontSize: 18.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                            ),
-                                          ],
                                         ),
                                       ),
                                       InkWell(
@@ -2340,6 +2330,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   vacantRooms:
                                                                       _model
                                                                           .vacantRooms!,
+                                                                  hotelSetting:
+                                                                      homePageHotelSettingsRecord!,
                                                                 ),
                                                               ),
                                                             ),
@@ -2355,12 +2347,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         color: FlutterFlowTheme
                                                                 .of(context)
                                                             .secondaryBackground,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryText,
+                                                            offset: const Offset(
+                                                              3.0,
+                                                              3.0,
+                                                            ),
+                                                          )
+                                                        ],
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8.0),
                                                         border: Border.all(
-                                                          color:
-                                                              const Color(0xFFE0E3E7),
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
                                                           width: 2.0,
                                                         ),
                                                       ),
@@ -2461,11 +2465,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .secondaryBackground,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      offset: const Offset(
+                                                        3.0,
+                                                        3.0,
+                                                      ),
+                                                    )
+                                                  ],
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           8.0),
                                                   border: Border.all(
-                                                    color: const Color(0xFFE0E3E7),
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
                                                     width: 2.0,
                                                   ),
                                                 ),
@@ -2664,12 +2682,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       color: FlutterFlowTheme
                                                               .of(context)
                                                           .secondaryBackground,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          offset: const Offset(
+                                                            3.0,
+                                                            3.0,
+                                                          ),
+                                                        )
+                                                      ],
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8.0),
                                                       border: Border.all(
                                                         color:
-                                                            const Color(0xFFE0E3E7),
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
                                                         width: 2.0,
                                                       ),
                                                     ),
@@ -2822,11 +2853,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .secondaryBackground,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      offset: const Offset(
+                                                        3.0,
+                                                        3.0,
+                                                      ),
+                                                    )
+                                                  ],
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           8.0),
                                                   border: Border.all(
-                                                    color: const Color(0xFFE0E3E7),
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
                                                     width: 2.0,
                                                   ),
                                                 ),
@@ -2954,10 +2999,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryBackground,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                    offset: const Offset(
+                                                      3.0,
+                                                      3.0,
+                                                    ),
+                                                  )
+                                                ],
                                                 borderRadius:
                                                     BorderRadius.circular(8.0),
                                                 border: Border.all(
-                                                  color: const Color(0xFFE0E3E7),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
                                                   width: 2.0,
                                                 ),
                                               ),
@@ -3018,7 +3076,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             snapshot.data!;
 
                                                         return AutoSizeText(
-                                                          textCount.toString(),
+                                                          textCount
+                                                              .toString()
+                                                              .maybeHandleOverflow(
+                                                                maxChars: 3,
+                                                              ),
                                                           maxLines: 1,
                                                           minFontSize: 10.0,
                                                           style: FlutterFlowTheme
@@ -3113,7 +3175,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       maxHeight: 260.0,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF4B39EF),
                                       borderRadius: BorderRadius.circular(0.0),
                                     ),
                                     child: Column(
@@ -3121,166 +3182,183 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      16.0, 12.0, 0.0, 0.0),
-                                              child: Text(
-                                                'Rooms',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineMedium
-                                                        .override(
-                                                          fontFamily: 'Outfit',
-                                                          color: Colors.white,
-                                                          fontSize: 24.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  24.0, 0.0, 24.0, 0.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 12.0, 0.0, 0.0),
+                                                child: Text(
+                                                  'Rooms',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .headlineMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Plus Jakarta Sans',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        fontSize: 18.0,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                ),
                                               ),
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 12.0, 0.0, 0.0),
-                                                  child: FlutterFlowIconButton(
-                                                    borderColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primary,
-                                                    borderRadius: 20.0,
-                                                    borderWidth: 1.0,
-                                                    buttonSize: 40.0,
-                                                    fillColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent1,
-                                                    icon: const Icon(
-                                                      Icons.list_alt_outlined,
-                                                      color: Colors.white,
-                                                      size: 24.0,
-                                                    ),
-                                                    onPressed: () async {
-                                                      context.pushNamed(
-                                                        'HistoryInRooms',
-                                                        queryParameters: {
-                                                          'room':
-                                                              serializeParam(
-                                                            roomContainerRoomsRecordList,
-                                                            ParamType.Document,
-                                                            isList: true,
-                                                          ),
-                                                        }.withoutNulls,
-                                                        extra: <String,
-                                                            dynamic>{
-                                                          'room':
-                                                              roomContainerRoomsRecordList,
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 12.0, 0.0, 0.0),
-                                                  child: FlutterFlowIconButton(
-                                                    borderColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primary,
-                                                    borderRadius: 20.0,
-                                                    borderWidth: 1.0,
-                                                    buttonSize: 40.0,
-                                                    fillColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent1,
-                                                    icon: const Icon(
-                                                      Icons.discount_outlined,
-                                                      color: Colors.white,
-                                                      size: 24.0,
-                                                    ),
-                                                    onPressed: () async {
-                                                      await showModalBottomSheet(
-                                                        isScrollControlled:
-                                                            true,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return GestureDetector(
-                                                            onTap: () =>
-                                                                FocusScope.of(
-                                                                        context)
-                                                                    .unfocus(),
-                                                            child: Padding(
-                                                              padding: MediaQuery
-                                                                  .viewInsetsOf(
-                                                                      context),
-                                                              child: const SizedBox(
-                                                                height: double
-                                                                    .infinity,
-                                                                child:
-                                                                    PromoWidget(),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ).then((value) =>
-                                                          safeSetState(() {}));
-                                                    },
-                                                  ),
-                                                ),
-                                                if (valueOrDefault(
-                                                        currentUserDocument
-                                                            ?.role,
-                                                        '') ==
-                                                    'admin')
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
                                                   Padding(
                                                     padding:
                                                         const EdgeInsetsDirectional
                                                             .fromSTEB(0.0, 12.0,
-                                                                0.0, 0.0),
-                                                    child: AuthUserStreamWidget(
-                                                      builder: (context) =>
-                                                          FlutterFlowIconButton(
-                                                        borderColor:
+                                                                10.0, 0.0),
+                                                    child:
+                                                        FlutterFlowIconButton(
+                                                      borderColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      borderRadius: 10.0,
+                                                      borderWidth: 1.0,
+                                                      buttonSize: 40.0,
+                                                      icon: Icon(
+                                                        Icons.list_alt_outlined,
+                                                        color:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .primary,
-                                                        borderRadius: 20.0,
-                                                        borderWidth: 1.0,
-                                                        buttonSize: 40.0,
-                                                        fillColor:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .accent1,
-                                                        icon: const Icon(
-                                                          Icons
-                                                              .edit_note_rounded,
-                                                          color: Colors.white,
-                                                          size: 24.0,
-                                                        ),
-                                                        onPressed: () async {
-                                                          context.pushNamed(
-                                                              'RoomList');
-                                                        },
+                                                                .primaryText,
+                                                        size: 24.0,
                                                       ),
+                                                      onPressed: () async {
+                                                        context.pushNamed(
+                                                          'HistoryInRooms',
+                                                          queryParameters: {
+                                                            'room':
+                                                                serializeParam(
+                                                              roomContainerRoomsRecordList,
+                                                              ParamType
+                                                                  .Document,
+                                                              isList: true,
+                                                            ),
+                                                          }.withoutNulls,
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            'room':
+                                                                roomContainerRoomsRecordList,
+                                                          },
+                                                        );
+                                                      },
                                                     ),
                                                   ),
-                                              ],
-                                            ),
-                                          ],
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 12.0,
+                                                                10.0, 0.0),
+                                                    child:
+                                                        FlutterFlowIconButton(
+                                                      borderColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      borderRadius: 10.0,
+                                                      borderWidth: 1.0,
+                                                      buttonSize: 40.0,
+                                                      icon: Icon(
+                                                        Icons.discount_outlined,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        size: 24.0,
+                                                      ),
+                                                      onPressed: () async {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return GestureDetector(
+                                                              onTap: () =>
+                                                                  FocusScope.of(
+                                                                          context)
+                                                                      .unfocus(),
+                                                              child: Padding(
+                                                                padding: MediaQuery
+                                                                    .viewInsetsOf(
+                                                                        context),
+                                                                child:
+                                                                    const SizedBox(
+                                                                  height: double
+                                                                      .infinity,
+                                                                  child:
+                                                                      PromoWidget(),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).then((value) =>
+                                                            safeSetState(
+                                                                () {}));
+                                                      },
+                                                    ),
+                                                  ),
+                                                  if (valueOrDefault(
+                                                          currentUserDocument
+                                                              ?.role,
+                                                          '') ==
+                                                      'admin')
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  12.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child:
+                                                          AuthUserStreamWidget(
+                                                        builder: (context) =>
+                                                            FlutterFlowIconButton(
+                                                          borderColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primaryText,
+                                                          borderRadius: 10.0,
+                                                          borderWidth: 1.0,
+                                                          buttonSize: 40.0,
+                                                          icon: Icon(
+                                                            Icons
+                                                                .edit_note_rounded,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryText,
+                                                            size: 24.0,
+                                                          ),
+                                                          onPressed: () async {
+                                                            context.pushNamed(
+                                                                'RoomList');
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         Flexible(
                                           child: Builder(
@@ -3292,7 +3370,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
                                               return ListView.builder(
                                                 padding: const EdgeInsets.fromLTRB(
-                                                  0,
+                                                  4.0,
                                                   0,
                                                   20.0,
                                                   0,
@@ -3414,14 +3492,19 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         decoration:
                                                             BoxDecoration(
                                                           color: Colors.white,
-                                                          boxShadow: const [
+                                                          boxShadow: [
                                                             BoxShadow(
-                                                              blurRadius: 4.0,
-                                                              color: Color(
-                                                                  0x2B202529),
-                                                              offset: Offset(
-                                                                0.0,
-                                                                2.0,
+                                                              color: roomsItem
+                                                                          .vacant ==
+                                                                      true
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondary
+                                                                  : const Color(
+                                                                      0xFFFF5963),
+                                                              offset: const Offset(
+                                                                3.0,
+                                                                3.0,
                                                               ),
                                                             )
                                                           ],
@@ -3429,6 +3512,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               BorderRadius
                                                                   .circular(
                                                                       12.0),
+                                                          border: Border.all(
+                                                            color: roomsItem
+                                                                        .vacant ==
+                                                                    true
+                                                                ? FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondary
+                                                                : const Color(
+                                                                    0xFFFF5963),
+                                                            width: 2.0,
+                                                          ),
                                                         ),
                                                         child: Padding(
                                                           padding:
@@ -3612,20 +3706,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     child:
                                                                         FlutterFlowIconButton(
                                                                       borderColor:
-                                                                          const Color(
-                                                                              0xFFF1F4F8),
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .primaryText,
                                                                       borderRadius:
-                                                                          30.0,
+                                                                          15.0,
                                                                       borderWidth:
                                                                           2.0,
                                                                       buttonSize:
                                                                           44.0,
                                                                       icon:
-                                                                          const Icon(
+                                                                          Icon(
                                                                         Icons
                                                                             .arrow_forward_rounded,
-                                                                        color: Color(
-                                                                            0xFF57636C),
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
                                                                         size:
                                                                             24.0,
                                                                       ),
@@ -3808,7 +3902,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         borderColor:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .alternate,
+                                                                .primaryText,
                                                         borderRadius: 10.0,
                                                         borderWidth: 1.0,
                                                         buttonSize: 40.0,
@@ -3921,7 +4015,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               borderColor:
                                                                   FlutterFlowTheme.of(
                                                                           context)
-                                                                      .alternate,
+                                                                      .primaryText,
                                                               borderRadius:
                                                                   10.0,
                                                               borderWidth: 1.0,
@@ -4039,7 +4133,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               borderColor:
                                                                   FlutterFlowTheme.of(
                                                                           context)
-                                                                      .alternate,
+                                                                      .primaryText,
                                                               borderRadius:
                                                                   10.0,
                                                               borderWidth: 1.0,
@@ -4066,7 +4160,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       borderColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .alternate,
+                                                              .primaryText,
                                                       borderRadius: 10.0,
                                                       borderWidth: 1.0,
                                                       buttonSize: 40.0,
@@ -4200,14 +4294,19 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         decoration:
                                                             BoxDecoration(
                                                           color: Colors.white,
-                                                          boxShadow: const [
+                                                          boxShadow: [
                                                             BoxShadow(
-                                                              blurRadius: 12.0,
-                                                              color: Color(
-                                                                  0x34000000),
-                                                              offset: Offset(
-                                                                -2.0,
-                                                                5.0,
+                                                              color: issuesListItem.status ==
+                                                                      'pending'
+                                                                  ? FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .error
+                                                                  : FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondary,
+                                                              offset: const Offset(
+                                                                3.0,
+                                                                3.0,
                                                               ),
                                                             )
                                                           ],
@@ -4215,6 +4314,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               BorderRadius
                                                                   .circular(
                                                                       8.0),
+                                                          border: Border.all(
+                                                            color: issuesListItem
+                                                                        .status ==
+                                                                    'pending'
+                                                                ? FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .error
+                                                                : FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondary,
+                                                            width: 2.0,
+                                                          ),
                                                         ),
                                                         child: Padding(
                                                           padding:
@@ -4872,19 +4983,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   child:
                                                                       FlutterFlowIconButton(
                                                                     borderColor:
-                                                                        const Color(
-                                                                            0xFFF1F4F8),
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .primaryText,
                                                                     borderRadius:
                                                                         30.0,
                                                                     borderWidth:
-                                                                        2.0,
+                                                                        1.0,
                                                                     buttonSize:
                                                                         44.0,
-                                                                    icon: const Icon(
+                                                                    icon: Icon(
                                                                       Icons
                                                                           .arrow_forward_rounded,
-                                                                      color: Color(
-                                                                          0xFF57636C),
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
                                                                       size:
                                                                           24.0,
                                                                     ),
@@ -5228,24 +5340,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                       padding: const EdgeInsetsDirectional.fromSTEB(
                                                                           0.0,
                                                                           0.0,
-                                                                          5.0,
+                                                                          10.0,
                                                                           0.0),
                                                                       child:
                                                                           FlutterFlowIconButton(
                                                                         borderColor:
-                                                                            const Color(0xFFF1F4F8),
+                                                                            FlutterFlowTheme.of(context).primaryText,
                                                                         borderRadius:
                                                                             30.0,
                                                                         borderWidth:
-                                                                            2.0,
+                                                                            1.0,
                                                                         buttonSize:
                                                                             44.0,
                                                                         icon:
-                                                                            const Icon(
+                                                                            Icon(
                                                                           Icons
                                                                               .featured_play_list_outlined,
                                                                           color:
-                                                                              Color(0xFF57636C),
+                                                                              FlutterFlowTheme.of(context).primaryText,
                                                                           size:
                                                                               24.0,
                                                                         ),
@@ -5285,20 +5397,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     ),
                                                                     FlutterFlowIconButton(
                                                                       borderColor:
-                                                                          const Color(
-                                                                              0xFFF1F4F8),
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .primaryText,
                                                                       borderRadius:
                                                                           30.0,
                                                                       borderWidth:
-                                                                          2.0,
+                                                                          1.0,
                                                                       buttonSize:
                                                                           44.0,
                                                                       icon:
-                                                                          const Icon(
+                                                                          Icon(
                                                                         Icons
                                                                             .add,
-                                                                        color: Color(
-                                                                            0xFF57636C),
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryText,
                                                                         size:
                                                                             24.0,
                                                                       ),
@@ -5406,21 +5518,24 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                     .fromSTEB(
                                                                         0.0,
                                                                         0.0,
-                                                                        5.0,
+                                                                        10.0,
                                                                         0.0),
                                                             child:
                                                                 FlutterFlowIconButton(
-                                                              borderColor: const Color(
-                                                                  0xFFF1F4F8),
+                                                              borderColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
                                                               borderRadius:
                                                                   30.0,
-                                                              borderWidth: 2.0,
+                                                              borderWidth: 1.0,
                                                               buttonSize: 44.0,
-                                                              icon: const Icon(
+                                                              icon: Icon(
                                                                 Icons
                                                                     .featured_play_list_outlined,
-                                                                color: Color(
-                                                                    0xFF57636C),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
                                                                 size: 24.0,
                                                               ),
                                                               onPressed:
@@ -5472,15 +5587,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             ),
                                                           ),
                                                           FlutterFlowIconButton(
-                                                            borderColor: const Color(
-                                                                0xFFF1F4F8),
+                                                            borderColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
                                                             borderRadius: 30.0,
-                                                            borderWidth: 2.0,
+                                                            borderWidth: 1.0,
                                                             buttonSize: 44.0,
-                                                            icon: const Icon(
+                                                            icon: Icon(
                                                               Icons.add,
-                                                              color: Color(
-                                                                  0xFF57636C),
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryText,
                                                               size: 24.0,
                                                             ),
                                                             onPressed:
@@ -5543,15 +5661,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     children: [
                                                       FlutterFlowIconButton(
                                                         borderColor:
-                                                            const Color(0xFFF1F4F8),
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
                                                         borderRadius: 30.0,
-                                                        borderWidth: 2.0,
+                                                        borderWidth: 1.0,
                                                         buttonSize: 44.0,
-                                                        icon: const Icon(
+                                                        icon: Icon(
                                                           Icons
                                                               .arrow_forward_rounded,
-                                                          color:
-                                                              Color(0xFF57636C),
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
                                                           size: 24.0,
                                                         ),
                                                         onPressed: () async {
