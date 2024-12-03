@@ -522,61 +522,165 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.edit == false) {
-                                    if (_model.categoryTextController.text !=
-                                            '') {
-                                      // create goods
+                                  if (FFAppState().role != 'demo') {
+                                    if (widget.edit == false) {
+                                      if (_model.categoryTextController.text !=
+                                              '') {
+                                        // create goods
 
-                                      var goodsRecordReference =
-                                          GoodsRecord.collection.doc();
-                                      await goodsRecordReference
-                                          .set(createGoodsRecordData(
+                                        var goodsRecordReference =
+                                            GoodsRecord.collection.doc();
+                                        await goodsRecordReference
+                                            .set(createGoodsRecordData(
+                                          price: double.tryParse(
+                                              _model.priceTextController.text),
+                                          hotel: FFAppState().hotel,
+                                          quantity: int.tryParse(_model
+                                              .quantityTextController.text),
+                                          description: functions.startBigLetter(
+                                              _model.descTextController.text),
+                                          category: functions.startBigLetter(
+                                              _model
+                                                  .categoryTextController.text),
+                                          replenish: false,
+                                        ));
+                                        _model.createPayload =
+                                            GoodsRecord.getDocumentFromData(
+                                                createGoodsRecordData(
+                                                  price: double.tryParse(_model
+                                                      .priceTextController
+                                                      .text),
+                                                  hotel: FFAppState().hotel,
+                                                  quantity: int.tryParse(_model
+                                                      .quantityTextController
+                                                      .text),
+                                                  description: functions
+                                                      .startBigLetter(_model
+                                                          .descTextController
+                                                          .text),
+                                                  category: functions
+                                                      .startBigLetter(_model
+                                                          .categoryTextController
+                                                          .text),
+                                                  replenish: false,
+                                                ),
+                                                goodsRecordReference);
+                                        // create inventory
+
+                                        await InventoriesRecord.collection
+                                            .doc()
+                                            .set(createInventoriesRecordData(
+                                              date: functions.today(),
+                                              activity: 'added new item',
+                                              hotel: FFAppState().hotel,
+                                              staff: currentUserReference,
+                                              quantityChange: int.tryParse(
+                                                  _model.quantityTextController
+                                                      .text),
+                                              previousQuantity: 0,
+                                              item: functions.startBigLetter(
+                                                  _model
+                                                      .descTextController.text),
+                                              operator: 'add',
+                                              previousPrice: widget.price,
+                                              priceChange: double.tryParse(
+                                                  _model.priceTextController
+                                                      .text),
+                                              remitted: false,
+                                            ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              '${_model.descTextController.text} has been added!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary,
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'You need to enter category first!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .error,
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      // update goods
+
+                                      await widget.goodsRef!
+                                          .update(createGoodsRecordData(
                                         price: double.tryParse(
                                             _model.priceTextController.text),
-                                        hotel: FFAppState().hotel,
-                                        quantity: int.tryParse(
-                                            _model.quantityTextController.text),
                                         description: functions.startBigLetter(
                                             _model.descTextController.text),
+                                        quantity: int.tryParse(
+                                            _model.quantityTextController.text),
                                         category: functions.startBigLetter(
                                             _model.categoryTextController.text),
-                                        replenish: false,
                                       ));
-                                      _model.createPayload =
-                                          GoodsRecord.getDocumentFromData(
-                                              createGoodsRecordData(
-                                                price: double.tryParse(_model
-                                                    .priceTextController.text),
-                                                hotel: FFAppState().hotel,
-                                                quantity: int.tryParse(_model
-                                                    .quantityTextController
-                                                    .text),
-                                                description: functions
-                                                    .startBigLetter(_model
-                                                        .descTextController
-                                                        .text),
-                                                category: functions
-                                                    .startBigLetter(_model
-                                                        .categoryTextController
-                                                        .text),
-                                                replenish: false,
-                                              ),
-                                              goodsRecordReference);
-                                      // create inventory
+                                      // Saving inventory
 
                                       await InventoriesRecord.collection
                                           .doc()
                                           .set(createInventoriesRecordData(
                                             date: functions.today(),
-                                            activity: 'added new item',
+                                            activity: _model.whyTextController
+                                                        .text ==
+                                                    ''
+                                                ? functions.activityOfInventory(
+                                                    widget.price!,
+                                                    double.parse(_model
+                                                        .priceTextController
+                                                        .text),
+                                                    widget.quantity!,
+                                                    int.parse(_model
+                                                        .quantityTextController
+                                                        .text),
+                                                    widget.desc!,
+                                                    _model.descTextController
+                                                        .text,
+                                                    widget.category!,
+                                                    _model
+                                                        .categoryTextController
+                                                        .text)
+                                                : _model.whyTextController.text,
                                             hotel: FFAppState().hotel,
                                             staff: currentUserReference,
-                                            quantityChange: int.tryParse(_model
-                                                .quantityTextController.text),
-                                            previousQuantity: 0,
-                                            item: functions.startBigLetter(
-                                                _model.descTextController.text),
-                                            operator: 'add',
+                                            quantityChange:
+                                                (functions.stringToInt(_model
+                                                        .quantityTextController
+                                                        .text)!) -
+                                                    (widget.quantity!),
+                                            previousQuantity: widget.quantity,
+                                            item:
+                                                _model.descTextController.text,
+                                            operator: functions.whichOperator(
+                                                widget.quantity!,
+                                                int.parse(_model
+                                                    .quantityTextController
+                                                    .text)),
                                             previousPrice: widget.price,
                                             priceChange: double.tryParse(_model
                                                 .priceTextController.text),
@@ -586,7 +690,7 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            '${_model.descTextController.text} has been added!',
+                                            '${_model.descTextController.text} has been updated!',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
@@ -600,102 +704,26 @@ class _ItemAddEditWidgetState extends State<ItemAddEditWidget> {
                                                   .secondary,
                                         ),
                                       );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'You need to enter category first!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .info,
-                                            ),
-                                          ),
-                                          duration:
-                                              const Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .error,
-                                        ),
-                                      );
                                     }
+
+                                    Navigator.pop(context);
                                   } else {
-                                    // update goods
-
-                                    await widget.goodsRef!
-                                        .update(createGoodsRecordData(
-                                      price: double.tryParse(
-                                          _model.priceTextController.text),
-                                      description: functions.startBigLetter(
-                                          _model.descTextController.text),
-                                      quantity: int.tryParse(
-                                          _model.quantityTextController.text),
-                                      category: functions.startBigLetter(
-                                          _model.categoryTextController.text),
-                                    ));
-                                    // Saving inventory
-
-                                    await InventoriesRecord.collection
-                                        .doc()
-                                        .set(createInventoriesRecordData(
-                                          date: functions.today(),
-                                          activity: _model
-                                                      .whyTextController.text ==
-                                                  ''
-                                              ? functions.activityOfInventory(
-                                                  widget.price!,
-                                                  double.parse(_model
-                                                      .priceTextController
-                                                      .text),
-                                                  widget.quantity!,
-                                                  int.parse(_model
-                                                      .quantityTextController
-                                                      .text),
-                                                  widget.desc!,
-                                                  _model
-                                                      .descTextController.text,
-                                                  widget.category!,
-                                                  _model.categoryTextController
-                                                      .text)
-                                              : _model.whyTextController.text,
-                                          hotel: FFAppState().hotel,
-                                          staff: currentUserReference,
-                                          quantityChange:
-                                              (functions.stringToInt(_model
-                                                      .quantityTextController
-                                                      .text)!) -
-                                                  (widget.quantity!),
-                                          previousQuantity: widget.quantity,
-                                          item: _model.descTextController.text,
-                                          operator: functions.whichOperator(
-                                              widget.quantity!,
-                                              int.parse(_model
-                                                  .quantityTextController
-                                                  .text)),
-                                          previousPrice: widget.price,
-                                          priceChange: double.tryParse(
-                                              _model.priceTextController.text),
-                                          remitted: false,
-                                        ));
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          '${_model.descTextController.text} has been updated!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
                                   }
-
-                                  Navigator.pop(context);
 
                                   safeSetState(() {});
                                 },

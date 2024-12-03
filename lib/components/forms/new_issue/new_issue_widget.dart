@@ -48,8 +48,12 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
         // set form with detail
         safeSetState(() {
           _model.detailTextController?.text = _model.issueToEdit!.detail;
-          _model.detailTextController?.selection = TextSelection.collapsed(
-              offset: _model.detailTextController!.text.length);
+          _model.detailFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.detailTextController?.selection = TextSelection.collapsed(
+              offset: _model.detailTextController!.text.length,
+            );
+          });
         });
       }
     });
@@ -328,67 +332,92 @@ class _NewIssueWidgetState extends State<NewIssueWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  // isLoading
-                                  _model.isLoading = true;
-                                  safeSetState(() {});
-                                  if (widget.edit) {
-                                    await widget.ref!
-                                        .update(createIssuesRecordData(
-                                      detail: functions.startBigLetter(
-                                          _model.detailTextController.text),
-                                    ));
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'The issue has now been updated!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                          ),
-                                        ),
-                                        duration: const Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
-                                      ),
-                                    );
-                                  } else {
-                                    await IssuesRecord.collection.doc().set({
-                                      ...createIssuesRecordData(
+                                  if (FFAppState().role != 'demo') {
+                                    // isLoading
+                                    _model.isLoading = true;
+                                    safeSetState(() {});
+                                    if (widget.edit) {
+                                      await widget.ref!
+                                          .update(createIssuesRecordData(
                                         detail: functions.startBigLetter(
                                             _model.detailTextController.text),
-                                        status: 'pending',
-                                        hotel: FFAppState().hotel,
-                                        staffName: currentUserDisplayName,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                        },
-                                      ),
-                                    });
-                                    Navigator.pop(context);
+                                      ));
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'The issue has now been updated!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    } else {
+                                      await IssuesRecord.collection.doc().set({
+                                        ...createIssuesRecordData(
+                                          detail: functions.startBigLetter(
+                                              _model.detailTextController.text),
+                                          status: 'pending',
+                                          hotel: FFAppState().hotel,
+                                          staffName: currentUserDisplayName,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'The issue has now been reported!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    }
+
+                                    // unLoad
+                                    _model.isLoading = false;
+                                    safeSetState(() {});
+                                  } else {
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'The issue has now been reported!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
                                   }
-
-                                  // unLoad
-                                  _model.isLoading = false;
-                                  safeSetState(() {});
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

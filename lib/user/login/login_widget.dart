@@ -209,7 +209,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   textCapitalization: TextCapitalization.words,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Name of Staff',
+                                    labelText: _model.demo
+                                        ? 'Name of Test User'
+                                        : 'Name of Staff',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -314,7 +316,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   displayName: functions
                                                       .startBigLetter(_model
                                                           .textController.text),
-                                                  role: 'generic',
+                                                  role: _model.demo
+                                                      ? 'demo'
+                                                      : 'generic',
                                                   hotel:
                                                       _model.radioButtonValue,
                                                   expired: false,
@@ -332,12 +336,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                 FFAppState().settingRef =
                                                     _model.setting?.reference;
                                               } else {
-                                                // Default Generic User Only
+                                                // use role from app state
 
                                                 await currentUserReference!
                                                     .update(
                                                         createUsersRecordData(
-                                                  role: FFAppState().role,
+                                                  role: _model.demo
+                                                      ? 'demo'
+                                                      : FFAppState().role,
                                                   expired: false,
                                                   displayName: functions
                                                       .startBigLetter(_model
@@ -427,6 +433,69 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         disabledTextColor:
                                             FlutterFlowTheme.of(context)
                                                 .secondaryText,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (containerHotelSettingsRecord?.demoAccess ??
+                                  true)
+                                Material(
+                                  color: Colors.transparent,
+                                  child: Theme(
+                                    data: ThemeData(
+                                      checkboxTheme: const CheckboxThemeData(
+                                        visualDensity: VisualDensity.compact,
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                      unselectedWidgetColor:
+                                          FlutterFlowTheme.of(context)
+                                              .alternate,
+                                    ),
+                                    child: CheckboxListTile(
+                                      value: _model.checkboxListTileValue ??=
+                                          true,
+                                      onChanged: (newValue) async {
+                                        safeSetState(() => _model
+                                            .checkboxListTileValue = newValue!);
+                                        if (newValue!) {
+                                          _model.demo = true;
+                                          safeSetState(() {});
+                                        } else {
+                                          _model.demo = false;
+                                          safeSetState(() {});
+                                        }
+                                      },
+                                      title: Text(
+                                        'Demo Access',
+                                        style: FlutterFlowTheme.of(context)
+                                            .titleLarge
+                                            .override(
+                                              fontFamily: 'Outfit',
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                      subtitle: Text(
+                                        'Data changes are restricted in demo mode due to this app’s production use.',
+                                        style: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                      tileColor: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      activeColor:
+                                          FlutterFlowTheme.of(context).primary,
+                                      checkColor:
+                                          FlutterFlowTheme.of(context).info,
+                                      dense: false,
+                                      controlAffinity:
+                                          ListTileControlAffinity.trailing,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                       ),
                                     ),
                                   ),

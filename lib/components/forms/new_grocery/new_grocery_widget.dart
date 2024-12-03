@@ -350,71 +350,52 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    if (_model.amountTextController.text !=
-                                            '') {
-                                      var confirmDialogResponse =
-                                          await showDialog<bool>(
-                                                context: context,
-                                                builder: (alertDialogContext) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        'Have you really spent for grocery?'),
-                                                    content: Text(
-                                                        'You are recording an amount of Php ${_model.amountTextController.text}.'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                false),
-                                                        child: const Text('Cancel'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext,
-                                                                true),
-                                                        child: const Text('Confirm'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ) ??
-                                              false;
-                                      if (confirmDialogResponse) {
-                                        await GroceriesRecord.collection
-                                            .doc()
-                                            .set({
-                                          ...createGroceriesRecordData(
-                                            hotel: FFAppState().hotel,
-                                            recordedBy: currentUserReference,
-                                            amount: double.tryParse(_model
-                                                .amountTextController.text),
-                                            remark: functions.startBigLetter(
-                                                _model
-                                                    .remarkTextController.text),
-                                          ),
-                                          ...mapToFirestore(
-                                            {
-                                              'date':
-                                                  FieldValue.serverTimestamp(),
-                                            },
-                                          ),
-                                        });
-                                        if (_model.startCountingRevenue) {
-                                          // create goods revenue ratio
-
-                                          await GoodsRevenueRatioRecord
-                                              .collection
+                                    if (FFAppState().role != 'demo') {
+                                      if (_model.amountTextController.text !=
+                                              '') {
+                                        var confirmDialogResponse =
+                                            await showDialog<bool>(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'Have you really spent for grocery?'),
+                                                      content: Text(
+                                                          'You are recording an amount of Php ${_model.amountTextController.text}.'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                          child: const Text('Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                          child:
+                                                              const Text('Confirm'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ) ??
+                                                false;
+                                        if (confirmDialogResponse) {
+                                          await GroceriesRecord.collection
                                               .doc()
                                               .set({
-                                            ...createGoodsRevenueRatioRecordData(
-                                              grocery: double.tryParse(_model
-                                                  .amountTextController.text),
-                                              revenue: 0.0,
+                                            ...createGroceriesRecordData(
                                               hotel: FFAppState().hotel,
-                                              daysToBreakEven: 0,
-                                              daysPassed: 0,
+                                              recordedBy: currentUserReference,
+                                              amount: double.tryParse(_model
+                                                  .amountTextController.text),
+                                              remark: functions.startBigLetter(
+                                                  _model.remarkTextController
+                                                      .text),
                                             ),
                                             ...mapToFirestore(
                                               {
@@ -423,26 +404,32 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                               },
                                             ),
                                           });
-                                        } else {
-                                          // count grr
-                                          _model.countGrr =
-                                              await queryGoodsRevenueRatioRecordCount(
-                                            queryBuilder:
-                                                (goodsRevenueRatioRecord) =>
-                                                    goodsRevenueRatioRecord
-                                                        .where(
-                                                          'hotel',
-                                                          isEqualTo:
-                                                              FFAppState()
-                                                                  .hotel,
-                                                        )
-                                                        .orderBy('date',
-                                                            descending: true),
-                                          );
-                                          if (_model.countGrr! > 0) {
-                                            // last grr
-                                            _model.lastGrr =
-                                                await queryGoodsRevenueRatioRecordOnce(
+                                          if (_model.startCountingRevenue) {
+                                            // create goods revenue ratio
+
+                                            await GoodsRevenueRatioRecord
+                                                .collection
+                                                .doc()
+                                                .set({
+                                              ...createGoodsRevenueRatioRecordData(
+                                                grocery: double.tryParse(_model
+                                                    .amountTextController.text),
+                                                revenue: 0.0,
+                                                hotel: FFAppState().hotel,
+                                                daysToBreakEven: 0,
+                                                daysPassed: 0,
+                                              ),
+                                              ...mapToFirestore(
+                                                {
+                                                  'date': FieldValue
+                                                      .serverTimestamp(),
+                                                },
+                                              ),
+                                            });
+                                          } else {
+                                            // count grr
+                                            _model.countGrr =
+                                                await queryGoodsRevenueRatioRecordCount(
                                               queryBuilder:
                                                   (goodsRevenueRatioRecord) =>
                                                       goodsRevenueRatioRecord
@@ -454,94 +441,132 @@ class _NewGroceryWidgetState extends State<NewGroceryWidget> {
                                                           )
                                                           .orderBy('date',
                                                               descending: true),
-                                              singleRecord: true,
-                                            ).then((s) => s.firstOrNull);
-                                            // increment grocery
-
-                                            await _model.lastGrr!.reference
-                                                .update({
-                                              ...mapToFirestore(
-                                                {
-                                                  'grocery': FieldValue.increment(
-                                                      double.parse(_model
-                                                          .amountTextController
-                                                          .text)),
-                                                },
-                                              ),
-                                            });
-                                            if (_model.lastGrr!.revenue <=
-                                                valueOrDefault<double>(
-                                                  _model.lastGrr!.grocery +
-                                                      double.parse(_model
-                                                          .amountTextController
-                                                          .text),
-                                                  0.0,
-                                                )) {
-                                              // reset daysToBreakEven
+                                            );
+                                            if (_model.countGrr! > 0) {
+                                              // last grr
+                                              _model.lastGrr =
+                                                  await queryGoodsRevenueRatioRecordOnce(
+                                                queryBuilder:
+                                                    (goodsRevenueRatioRecord) =>
+                                                        goodsRevenueRatioRecord
+                                                            .where(
+                                                              'hotel',
+                                                              isEqualTo:
+                                                                  FFAppState()
+                                                                      .hotel,
+                                                            )
+                                                            .orderBy('date',
+                                                                descending:
+                                                                    true),
+                                                singleRecord: true,
+                                              ).then((s) => s.firstOrNull);
+                                              // increment grocery
 
                                               await _model.lastGrr!.reference
-                                                  .update(
-                                                      createGoodsRevenueRatioRecordData(
-                                                daysToBreakEven: 0,
-                                              ));
+                                                  .update({
+                                                ...mapToFirestore(
+                                                  {
+                                                    'grocery': FieldValue.increment(
+                                                        double.parse(_model
+                                                            .amountTextController
+                                                            .text)),
+                                                  },
+                                                ),
+                                              });
+                                              if (_model.lastGrr!.revenue <=
+                                                  valueOrDefault<double>(
+                                                    _model.lastGrr!.grocery +
+                                                        double.parse(_model
+                                                            .amountTextController
+                                                            .text),
+                                                    0.0,
+                                                  )) {
+                                                // reset daysToBreakEven
+
+                                                await _model.lastGrr!.reference
+                                                    .update(
+                                                        createGoodsRevenueRatioRecordData(
+                                                  daysToBreakEven: 0,
+                                                ));
+                                              }
                                             }
                                           }
+
+                                          // increment grocery expense in stats
+
+                                          await FFAppState()
+                                              .statsReference!
+                                              .update({
+                                            ...mapToFirestore(
+                                              {
+                                                'groceryExpenses':
+                                                    FieldValue.increment(
+                                                        double.parse(_model
+                                                            .amountTextController
+                                                            .text)),
+                                              },
+                                            ),
+                                          });
+                                          // clear groceryHome
+                                          FFAppState().clearGroceryHomeCache();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'You have recorded a spending in grocery.',
+                                                style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                ),
+                                              ),
+                                              duration:
+                                                  const Duration(milliseconds: 4000),
+                                              backgroundColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                            ),
+                                          );
                                         }
-
-                                        // increment grocery expense in stats
-
-                                        await FFAppState()
-                                            .statsReference!
-                                            .update({
-                                          ...mapToFirestore(
-                                            {
-                                              'groceryExpenses':
-                                                  FieldValue.increment(
-                                                      double.parse(_model
-                                                          .amountTextController
-                                                          .text)),
-                                            },
-                                          ),
-                                        });
-                                        // clear groceryHome
-                                        FFAppState().clearGroceryHomeCache();
+                                        Navigator.pop(context);
+                                      } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              'You have recorded a spending in grocery.',
+                                              'Please enter an amount!',
                                               style: TextStyle(
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .primaryText,
+                                                        .info,
                                               ),
                                             ),
                                             duration:
                                                 const Duration(milliseconds: 4000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
-                                                    .secondary,
+                                                    .error,
                                           ),
                                         );
                                       }
-                                      Navigator.pop(context);
                                     } else {
+                                      // inaccessible
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'Please enter an amount!',
+                                            'Inaccessible to Test User',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .info,
+                                                      .primaryText,
                                             ),
                                           ),
                                           duration:
                                               const Duration(milliseconds: 4000),
                                           backgroundColor:
                                               FlutterFlowTheme.of(context)
-                                                  .error,
+                                                  .secondary,
                                         ),
                                       );
                                     }

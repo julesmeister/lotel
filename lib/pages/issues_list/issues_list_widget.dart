@@ -168,33 +168,36 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
               borderRadius: 20.0,
               borderWidth: 1.0,
               buttonSize: 60.0,
+              disabledIconColor: FlutterFlowTheme.of(context).alternate,
               icon: Icon(
                 Icons.add,
                 color: FlutterFlowTheme.of(context).primaryText,
                 size: 24.0,
               ),
-              onPressed: () async {
-                await showModalBottomSheet(
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  enableDrag: false,
-                  context: context,
-                  builder: (context) {
-                    return GestureDetector(
-                      onTap: () => FocusScope.of(context).unfocus(),
-                      child: Padding(
-                        padding: MediaQuery.viewInsetsOf(context),
-                        child: const SizedBox(
-                          height: double.infinity,
-                          child: NewIssueWidget(
-                            edit: false,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ).then((value) => safeSetState(() {}));
-              },
+              onPressed: (FFAppState().role == 'demo')
+                  ? null
+                  : () async {
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        enableDrag: false,
+                        context: context,
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap: () => FocusScope.of(context).unfocus(),
+                            child: Padding(
+                              padding: MediaQuery.viewInsetsOf(context),
+                              child: const SizedBox(
+                                height: double.infinity,
+                                child: NewIssueWidget(
+                                  edit: false,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ).then((value) => safeSetState(() {}));
+                    },
             ),
           ],
           centerTitle: false,
@@ -378,22 +381,24 @@ class _IssuesListWidgetState extends State<IssuesListWidget>
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          await showModalBottomSheet(
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) {
-                              return GestureDetector(
-                                onTap: () => FocusScope.of(context).unfocus(),
-                                child: Padding(
-                                  padding: MediaQuery.viewInsetsOf(context),
-                                  child: OptionToIssueWidget(
-                                    issue: listViewIssuesRecord,
+                          if (FFAppState().role != 'demo') {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () => FocusScope.of(context).unfocus(),
+                                  child: Padding(
+                                    padding: MediaQuery.viewInsetsOf(context),
+                                    child: OptionToIssueWidget(
+                                      issue: listViewIssuesRecord,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ).then((value) => safeSetState(() {}));
+                                );
+                              },
+                            ).then((value) => safeSetState(() {}));
+                          }
                         },
                         child: Container(
                           width: 100.0,

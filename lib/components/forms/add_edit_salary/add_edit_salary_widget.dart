@@ -51,36 +51,58 @@ class _AddEditSalaryWidgetState extends State<AddEditSalaryWidget> {
         // set rate
         safeSetState(() {
           _model.rateTextController?.text = widget.salaryDoc!.rate.toString();
-          _model.rateTextController?.selection = TextSelection.collapsed(
-              offset: _model.rateTextController!.text.length);
+          _model.rateFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.rateTextController?.selection = TextSelection.collapsed(
+              offset: _model.rateTextController!.text.length,
+            );
+          });
         });
         // set sss
         safeSetState(() {
           _model.sssTextController?.text = widget.salaryDoc!.sss.toString();
-          _model.sssTextController?.selection = TextSelection.collapsed(
-              offset: _model.sssTextController!.text.length);
+          _model.sssFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.sssTextController?.selection = TextSelection.collapsed(
+              offset: _model.sssTextController!.text.length,
+            );
+          });
         });
         // set ca
         safeSetState(() {
           _model.caTextController?.text =
               widget.salaryDoc!.cashAdvance.toString();
-          _model.caTextController?.selection = TextSelection.collapsed(
-              offset: _model.caTextController!.text.length);
+          _model.caFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.caTextController?.selection = TextSelection.collapsed(
+              offset: _model.caTextController!.text.length,
+            );
+          });
         });
         if (widget.salaryDoc?.absences != null) {
           // set absences
           safeSetState(() {
             _model.absencesTextController?.text =
                 widget.salaryDoc!.absences.toString();
-            _model.absencesTextController?.selection = TextSelection.collapsed(
-                offset: _model.absencesTextController!.text.length);
+            _model.absencesFocusNode?.requestFocus();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _model.absencesTextController?.selection =
+                  TextSelection.collapsed(
+                offset: _model.absencesTextController!.text.length,
+              );
+            });
           });
         } else {
           // set to 0
           safeSetState(() {
             _model.absencesTextController?.text = '0';
-            _model.absencesTextController?.selection = TextSelection.collapsed(
-                offset: _model.absencesTextController!.text.length);
+            _model.absencesFocusNode?.requestFocus();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _model.absencesTextController?.selection =
+                  TextSelection.collapsed(
+                offset: _model.absencesTextController!.text.length,
+              );
+            });
           });
         }
 
@@ -261,12 +283,16 @@ class _AddEditSalaryWidgetState extends State<AddEditSalaryWidget> {
                                                   .first
                                                   .sssRate
                                                   .toString();
-                                          _model.sssTextController?.selection =
-                                              TextSelection.collapsed(
-                                                  offset: _model
-                                                      .sssTextController!
-                                                      .text
-                                                      .length);
+                                          _model.sssFocusNode?.requestFocus();
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            _model.sssTextController
+                                                    ?.selection =
+                                                TextSelection.collapsed(
+                                              offset: _model.sssTextController!
+                                                  .text.length,
+                                            );
+                                          });
                                         });
                                         // set rate
                                         safeSetState(() {
@@ -279,12 +305,16 @@ class _AddEditSalaryWidgetState extends State<AddEditSalaryWidget> {
                                                   .first
                                                   .weeklyRate
                                                   .toString();
-                                          _model.rateTextController?.selection =
-                                              TextSelection.collapsed(
-                                                  offset: _model
-                                                      .rateTextController!
-                                                      .text
-                                                      .length);
+                                          _model.rateFocusNode?.requestFocus();
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            _model.rateTextController
+                                                    ?.selection =
+                                                TextSelection.collapsed(
+                                              offset: _model.rateTextController!
+                                                  .text.length,
+                                            );
+                                          });
                                         });
                                         // advances
                                         _model.cashAdvances =
@@ -322,12 +352,16 @@ class _AddEditSalaryWidgetState extends State<AddEditSalaryWidget> {
                                             _model.caTextController?.text =
                                                 _model.cashAdvanceTotal
                                                     .toString();
-                                            _model.caTextController?.selection =
-                                                TextSelection.collapsed(
-                                                    offset: _model
-                                                        .caTextController!
-                                                        .text
-                                                        .length);
+                                            _model.caFocusNode?.requestFocus();
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              _model.caTextController
+                                                      ?.selection =
+                                                  TextSelection.collapsed(
+                                                offset: _model.caTextController!
+                                                    .text.length,
+                                              );
+                                            });
                                           });
                                         } else {
                                           if (shouldSetState) {
@@ -372,13 +406,19 @@ class _AddEditSalaryWidgetState extends State<AddEditSalaryWidget> {
                                             _model.absencesTextController
                                                     ?.text =
                                                 _model.absencesTotal.toString();
-                                            _model.absencesTextController
-                                                    ?.selection =
-                                                TextSelection.collapsed(
-                                                    offset: _model
-                                                        .absencesTextController!
-                                                        .text
-                                                        .length);
+                                            _model.absencesFocusNode
+                                                ?.requestFocus();
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              _model.absencesTextController
+                                                      ?.selection =
+                                                  TextSelection.collapsed(
+                                                offset: _model
+                                                    .absencesTextController!
+                                                    .text
+                                                    .length,
+                                              );
+                                            });
                                           });
                                         }
                                       }
@@ -779,123 +819,150 @@ class _AddEditSalaryWidgetState extends State<AddEditSalaryWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    if (widget.edit) {
-                                      // update values from form
+                                    if (FFAppState().role != 'demo') {
+                                      if (widget.edit) {
+                                        // update values from form
 
-                                      await widget.salaryDoc!.reference
-                                          .update({
-                                        ...createSalariesRecordData(
-                                          sss: double.tryParse(
-                                              _model.sssTextController.text),
-                                          cashAdvance: double.tryParse(
-                                              _model.caTextController.text),
-                                          total: (double.parse(_model
-                                                  .rateTextController.text) -
-                                              double.parse(_model
-                                                  .sssTextController.text) -
-                                              double.parse(_model
-                                                  .caTextController.text) -
-                                              double.parse(_model
-                                                  .absencesTextController
-                                                  .text)),
-                                          rate: double.tryParse(
-                                              _model.rateTextController.text),
-                                          absences: double.tryParse(_model
-                                              .absencesTextController.text),
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'absencesRefs': _model.absencesList
-                                                .map((e) => e.reference)
-                                                .toList(),
-                                          },
-                                        ),
-                                      });
-                                      // read updated salary
-                                      _model.updatedSalary =
-                                          await SalariesRecord.getDocumentOnce(
-                                              widget.salaryDoc!.reference);
-                                      // return salary
-                                      Navigator.pop(
-                                          context, _model.updatedSalary);
+                                        await widget.salaryDoc!.reference
+                                            .update({
+                                          ...createSalariesRecordData(
+                                            sss: double.tryParse(
+                                                _model.sssTextController.text),
+                                            cashAdvance: double.tryParse(
+                                                _model.caTextController.text),
+                                            total: (double.parse(_model
+                                                    .rateTextController.text) -
+                                                double.parse(_model
+                                                    .sssTextController.text) -
+                                                double.parse(_model
+                                                    .caTextController.text) -
+                                                double.parse(_model
+                                                    .absencesTextController
+                                                    .text)),
+                                            rate: double.tryParse(
+                                                _model.rateTextController.text),
+                                            absences: double.tryParse(_model
+                                                .absencesTextController.text),
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'absencesRefs': _model
+                                                  .absencesList
+                                                  .map((e) => e.reference)
+                                                  .toList(),
+                                            },
+                                          ),
+                                        });
+                                        // read updated salary
+                                        _model.updatedSalary =
+                                            await SalariesRecord
+                                                .getDocumentOnce(widget
+                                                    .salaryDoc!.reference);
+                                        // return salary
+                                        Navigator.pop(
+                                            context, _model.updatedSalary);
+                                      } else {
+                                        // create salary
+
+                                        var salariesRecordReference2 =
+                                            SalariesRecord.createDoc(
+                                                widget.payrollRef!);
+                                        await salariesRecordReference2.set({
+                                          ...createSalariesRecordData(
+                                            sss: double.parse(
+                                                _model.sssTextController.text),
+                                            cashAdvance: double.parse(
+                                                _model.caTextController.text),
+                                            total: (double.parse(_model
+                                                    .rateTextController.text) -
+                                                double.parse(_model
+                                                    .sssTextController.text) -
+                                                double.parse(_model
+                                                    .caTextController.text) -
+                                                double.parse(_model
+                                                    .absencesTextController
+                                                    .text)),
+                                            staff:
+                                                _model.selectedStaff?.reference,
+                                            rate: double.parse(
+                                                _model.rateTextController.text),
+                                            absences: double.parse(_model
+                                                .absencesTextController.text),
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date':
+                                                  FieldValue.serverTimestamp(),
+                                              'caRefs': _model.cashAdvancesList
+                                                  .map((e) => e.reference)
+                                                  .toList(),
+                                              'absencesRefs': _model
+                                                  .absencesList
+                                                  .map((e) => e.reference)
+                                                  .toList(),
+                                            },
+                                          ),
+                                        });
+                                        _model.newSalary =
+                                            SalariesRecord.getDocumentFromData({
+                                          ...createSalariesRecordData(
+                                            sss: double.parse(
+                                                _model.sssTextController.text),
+                                            cashAdvance: double.parse(
+                                                _model.caTextController.text),
+                                            total: (double.parse(_model
+                                                    .rateTextController.text) -
+                                                double.parse(_model
+                                                    .sssTextController.text) -
+                                                double.parse(_model
+                                                    .caTextController.text) -
+                                                double.parse(_model
+                                                    .absencesTextController
+                                                    .text)),
+                                            staff:
+                                                _model.selectedStaff?.reference,
+                                            rate: double.parse(
+                                                _model.rateTextController.text),
+                                            absences: double.parse(_model
+                                                .absencesTextController.text),
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date': DateTime.now(),
+                                              'caRefs': _model.cashAdvancesList
+                                                  .map((e) => e.reference)
+                                                  .toList(),
+                                              'absencesRefs': _model
+                                                  .absencesList
+                                                  .map((e) => e.reference)
+                                                  .toList(),
+                                            },
+                                          ),
+                                        }, salariesRecordReference2);
+                                        // return salary
+                                        Navigator.pop(
+                                            context, _model.newSalary);
+                                      }
                                     } else {
-                                      // create salary
-
-                                      var salariesRecordReference2 =
-                                          SalariesRecord.createDoc(
-                                              widget.payrollRef!);
-                                      await salariesRecordReference2.set({
-                                        ...createSalariesRecordData(
-                                          sss: double.parse(
-                                              _model.sssTextController.text),
-                                          cashAdvance: double.parse(
-                                              _model.caTextController.text),
-                                          total: (double.parse(_model
-                                                  .rateTextController.text) -
-                                              double.parse(_model
-                                                  .sssTextController.text) -
-                                              double.parse(_model
-                                                  .caTextController.text) -
-                                              double.parse(_model
-                                                  .absencesTextController
-                                                  .text)),
-                                          staff:
-                                              _model.selectedStaff?.reference,
-                                          rate: double.parse(
-                                              _model.rateTextController.text),
-                                          absences: double.parse(_model
-                                              .absencesTextController.text),
+                                      // inaccessible
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Inaccessible To Test User',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .error,
                                         ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
-                                            'caRefs': _model.cashAdvancesList
-                                                .map((e) => e.reference)
-                                                .toList(),
-                                            'absencesRefs': _model.absencesList
-                                                .map((e) => e.reference)
-                                                .toList(),
-                                          },
-                                        ),
-                                      });
-                                      _model.newSalary =
-                                          SalariesRecord.getDocumentFromData({
-                                        ...createSalariesRecordData(
-                                          sss: double.parse(
-                                              _model.sssTextController.text),
-                                          cashAdvance: double.parse(
-                                              _model.caTextController.text),
-                                          total: (double.parse(_model
-                                                  .rateTextController.text) -
-                                              double.parse(_model
-                                                  .sssTextController.text) -
-                                              double.parse(_model
-                                                  .caTextController.text) -
-                                              double.parse(_model
-                                                  .absencesTextController
-                                                  .text)),
-                                          staff:
-                                              _model.selectedStaff?.reference,
-                                          rate: double.parse(
-                                              _model.rateTextController.text),
-                                          absences: double.parse(_model
-                                              .absencesTextController.text),
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date': DateTime.now(),
-                                            'caRefs': _model.cashAdvancesList
-                                                .map((e) => e.reference)
-                                                .toList(),
-                                            'absencesRefs': _model.absencesList
-                                                .map((e) => e.reference)
-                                                .toList(),
-                                          },
-                                        ),
-                                      }, salariesRecordReference2);
-                                      // return salary
-                                      Navigator.pop(context, _model.newSalary);
+                                      );
                                     }
 
                                     ScaffoldMessenger.of(context).showSnackBar(

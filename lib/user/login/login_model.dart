@@ -5,6 +5,10 @@ import 'login_widget.dart' show LoginWidget;
 import 'package:flutter/material.dart';
 
 class LoginModel extends FlutterFlowModel<LoginWidget> {
+  ///  Local state fields for this page.
+
+  bool demo = false;
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for RadioButton widget.
@@ -15,6 +19,8 @@ class LoginModel extends FlutterFlowModel<LoginWidget> {
   String? Function(BuildContext, String?)? textControllerValidator;
   // Stores action output result for [Firestore Query - Query a collection] action in Button widget.
   HotelSettingsRecord? setting;
+  // State field(s) for CheckboxListTile widget.
+  bool? checkboxListTileValue;
 
   @override
   void initState(BuildContext context) {}

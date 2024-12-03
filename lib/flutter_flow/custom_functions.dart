@@ -403,23 +403,24 @@ String descriptionOfExpense(
 }
 
 String startBigLetter(String text) {
-  // start big letter
+  // Start with an empty string check
   if (text.isEmpty) {
     return text;
   }
 
-  List<String> words = text.split(RegExp(r'\s+|\b(?!,\d)'));
+  // Split text on whitespace while preserving numbers with commas
+  List<String> words = text.split(RegExp(r'(?<!\d),|(?=\s)|(?=\W)(?!\d)'));
   List<String> capitalizedWords = [];
 
   for (int i = 0; i < words.length; i++) {
-    String word = words[i];
+    String word = words[i].trim();
 
-    // Capitalize the first letter of each word
+    // Capitalize the first letter of each word if it's not empty
     if (word.isNotEmpty) {
       word = word[0].toUpperCase() + word.substring(1);
     }
 
-    // Check for parenthesis and handle spaces
+    // Manage spaces around parentheses
     if (word.startsWith('(') && i > 0 && !capitalizedWords.last.endsWith(' ')) {
       capitalizedWords[capitalizedWords.length - 1] += ' ';
     } else if (word.endsWith(')') &&

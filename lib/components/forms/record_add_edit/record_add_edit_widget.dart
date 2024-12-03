@@ -281,65 +281,91 @@ class _RecordAddEditWidgetState extends State<RecordAddEditWidget> {
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
-                                          if (widget.record != null) {
-                                            await widget.record!.reference
-                                                .update(createRecordsRecordData(
-                                              detail: functions.startBigLetter(
-                                                  _model.detailsTextController1
-                                                      .text),
-                                              hotel: FFAppState().hotel,
-                                              issuedBy: _model
-                                                  .detailsTextController2.text,
-                                              receivedBy: _model
-                                                  .detailsTextController3.text,
-                                            ));
-                                          } else {
-                                            await RecordsRecord.collection
-                                                .doc()
-                                                .set({
-                                              ...createRecordsRecordData(
+                                          if (FFAppState().role != 'demo') {
+                                            if (widget.record != null) {
+                                              await widget.record!.reference
+                                                  .update(
+                                                      createRecordsRecordData(
                                                 detail: functions
                                                     .startBigLetter(_model
                                                         .detailsTextController1
                                                         .text),
+                                                hotel: FFAppState().hotel,
                                                 issuedBy: _model
                                                     .detailsTextController2
                                                     .text,
-                                                hotel: FFAppState().hotel,
                                                 receivedBy: _model
                                                     .detailsTextController3
                                                     .text,
-                                              ),
-                                              ...mapToFirestore(
-                                                {
-                                                  'date': FieldValue
-                                                      .serverTimestamp(),
-                                                },
-                                              ),
-                                            });
-                                          }
-
-                                          Navigator.pop(context);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                widget.record != null
-                                                    ? 'Record updated!'
-                                                    : 'Record saved!',
-                                                style: TextStyle(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
+                                              ));
+                                            } else {
+                                              await RecordsRecord.collection
+                                                  .doc()
+                                                  .set({
+                                                ...createRecordsRecordData(
+                                                  detail: functions
+                                                      .startBigLetter(_model
+                                                          .detailsTextController1
+                                                          .text),
+                                                  issuedBy: _model
+                                                      .detailsTextController2
+                                                      .text,
+                                                  hotel: FFAppState().hotel,
+                                                  receivedBy: _model
+                                                      .detailsTextController3
+                                                      .text,
                                                 ),
+                                                ...mapToFirestore(
+                                                  {
+                                                    'date': FieldValue
+                                                        .serverTimestamp(),
+                                                  },
+                                                ),
+                                              });
+                                            }
+
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  widget.record != null
+                                                      ? 'Record updated!'
+                                                      : 'Record saved!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
                                               ),
-                                              duration:
-                                                  const Duration(milliseconds: 4000),
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary,
-                                            ),
-                                          );
+                                            );
+                                          } else {
+                                            // inaccessible
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Inaccessible To Test User',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                              ),
+                                            );
+                                          }
                                         },
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,

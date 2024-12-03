@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'pay_pending_partially_model.dart';
 export 'pay_pending_partially_model.dart';
 
@@ -70,6 +71,8 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -421,109 +424,130 @@ class _PayPendingPartiallyWidgetState extends State<PayPendingPartiallyWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  // get booking
-                                  _model.booking =
-                                      await BookingsRecord.getDocumentOnce(
-                                          widget.booking!);
-                                  // room
-                                  _model.room =
-                                      await RoomsRecord.getDocumentOnce(
-                                          _model.booking!.room!);
-                                  // reset
-                                  _model.loop = 0;
-                                  safeSetState(() {});
-                                  while (
-                                      _model.pendings.length != _model.loop) {
-                                    if (_model.pendings[_model.loop].pending) {
-                                      // update total only
+                                  if (FFAppState().role != 'demo') {
+                                    // get booking
+                                    _model.booking =
+                                        await BookingsRecord.getDocumentOnce(
+                                            widget.booking!);
+                                    // room
+                                    _model.room =
+                                        await RoomsRecord.getDocumentOnce(
+                                            _model.booking!.room!);
+                                    // reset
+                                    _model.loop = 0;
+                                    safeSetState(() {});
+                                    while (
+                                        _model.pendings.length != _model.loop) {
+                                      if (_model
+                                          .pendings[_model.loop].pending) {
+                                        // update total only
 
-                                      await _model.pendings[_model.loop].ref!
-                                          .update(createTransactionsRecordData(
-                                        total:
-                                            _model.pendings[_model.loop].amount,
-                                        pending: true,
-                                      ));
-                                    } else {
-                                      // update transaction
-
-                                      await _model.pendings[_model.loop].ref!
-                                          .update({
-                                        ...createTransactionsRecordData(
-                                          description:
-                                              'Guest paid the outstanding balance since ${functions.hoursAgo(widget.transactions!.where((e) => e.reference == _model.pendings[_model.loop].ref).toList().first.date!)} for ${widget.transactions?.where((e) => e.reference == _model.pendings[_model.loop].ref).toList().first.description}',
+                                        await _model.pendings[_model.loop].ref!
+                                            .update(
+                                                createTransactionsRecordData(
                                           total: _model
                                               .pendings[_model.loop].amount,
-                                          staff: currentUserReference,
-                                          pending: false,
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
-                                          },
-                                        ),
-                                      });
-                                      // remove pending from booking
+                                          pending: true,
+                                        ));
+                                      } else {
+                                        // update transaction
 
-                                      await widget.booking!.update({
-                                        ...mapToFirestore(
-                                          {
-                                            'pendings': FieldValue.arrayRemove([
-                                              _model.pendings[_model.loop].ref
-                                            ]),
-                                            'transactions':
-                                                FieldValue.arrayUnion([
-                                              _model.pendings[_model.loop].ref
-                                            ]),
-                                          },
-                                        ),
-                                      });
+                                        await _model.pendings[_model.loop].ref!
+                                            .update({
+                                          ...createTransactionsRecordData(
+                                            description:
+                                                'Guest paid the outstanding balance since ${functions.hoursAgo(widget.transactions!.where((e) => e.reference == _model.pendings[_model.loop].ref).toList().first.date!)} for ${widget.transactions?.where((e) => e.reference == _model.pendings[_model.loop].ref).toList().first.description}',
+                                            total: _model
+                                                .pendings[_model.loop].amount,
+                                            staff: currentUserReference,
+                                            pending: false,
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date':
+                                                  FieldValue.serverTimestamp(),
+                                            },
+                                          ),
+                                        });
+                                        // remove pending from booking
+
+                                        await widget.booking!.update({
+                                          ...mapToFirestore(
+                                            {
+                                              'pendings':
+                                                  FieldValue.arrayRemove([
+                                                _model.pendings[_model.loop].ref
+                                              ]),
+                                              'transactions':
+                                                  FieldValue.arrayUnion([
+                                                _model.pendings[_model.loop].ref
+                                              ]),
+                                            },
+                                          ),
+                                        });
+                                      }
+
+                                      // + loop
+                                      _model.loop = _model.loop + 1;
+                                      safeSetState(() {});
                                     }
+                                    // set history
 
-                                    // + loop
-                                    _model.loop = _model.loop + 1;
-                                    safeSetState(() {});
+                                    await HistoryRecord.createDoc(
+                                            _model.room!.reference)
+                                        .set({
+                                      ...createHistoryRecordData(
+                                        description:
+                                            'Guest settled balance for ${formatNumber(
+                                          _model.pendings
+                                              .where((e) => !e.pending)
+                                              .toList()
+                                              .length,
+                                          formatType: FormatType.custom,
+                                          format: '# transactions',
+                                          locale: '',
+                                        )}.',
+                                        staff: currentUserReference,
+                                        booking: widget.booking,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
+                                    // update book status
+
+                                    await widget.booking!
+                                        .update(createBookingsRecordData(
+                                      status: widget.transactions?.length !=
+                                              _model.pendings
+                                                  .where(
+                                                      (e) => e.pending == false)
+                                                  .toList()
+                                                  .length
+                                          ? 'pending'
+                                          : 'paid',
+                                    ));
+                                    // success
+                                    Navigator.pop(context, true);
+                                  } else {
+                                    // inaccessible
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Inaccessible To Test User',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
                                   }
-                                  // set history
-
-                                  await HistoryRecord.createDoc(
-                                          _model.room!.reference)
-                                      .set({
-                                    ...createHistoryRecordData(
-                                      description:
-                                          'Guest settled balance for ${formatNumber(
-                                        _model.pendings
-                                            .where((e) => !e.pending)
-                                            .toList()
-                                            .length,
-                                        formatType: FormatType.custom,
-                                        format: '# transactions',
-                                        locale: '',
-                                      )}.',
-                                      staff: currentUserReference,
-                                      booking: widget.booking,
-                                    ),
-                                    ...mapToFirestore(
-                                      {
-                                        'date': FieldValue.serverTimestamp(),
-                                      },
-                                    ),
-                                  });
-                                  // update book status
-
-                                  await widget.booking!
-                                      .update(createBookingsRecordData(
-                                    status: widget.transactions?.length !=
-                                            _model.pendings
-                                                .where(
-                                                    (e) => e.pending == false)
-                                                .toList()
-                                                .length
-                                        ? 'pending'
-                                        : 'paid',
-                                  ));
-                                  // success
-                                  Navigator.pop(context, true);
 
                                   safeSetState(() {});
                                 },

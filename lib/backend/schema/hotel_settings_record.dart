@@ -71,6 +71,11 @@ class HotelSettingsRecord extends FirestoreRecord {
   double get promoPercent => _promoPercent ?? 0.0;
   bool hasPromoPercent() => _promoPercent != null;
 
+  // "demoAccess" field.
+  bool? _demoAccess;
+  bool get demoAccess => _demoAccess ?? false;
+  bool hasDemoAccess() => _demoAccess != null;
+
   void _initializeFields() {
     _bedPrice = castToType<double>(snapshotData['bedPrice']);
     _hotel = snapshotData['hotel'] as String?;
@@ -84,6 +89,7 @@ class HotelSettingsRecord extends FirestoreRecord {
     _promoOn = snapshotData['promoOn'] as bool?;
     _promoDetail = snapshotData['promoDetail'] as String?;
     _promoPercent = castToType<double>(snapshotData['promoPercent']);
+    _demoAccess = snapshotData['demoAccess'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -131,6 +137,7 @@ Map<String, dynamic> createHotelSettingsRecordData({
   bool? promoOn,
   String? promoDetail,
   double? promoPercent,
+  bool? demoAccess,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -144,6 +151,7 @@ Map<String, dynamic> createHotelSettingsRecordData({
       'promoOn': promoOn,
       'promoDetail': promoDetail,
       'promoPercent': promoPercent,
+      'demoAccess': demoAccess,
     }.withoutNulls,
   );
 
@@ -168,7 +176,8 @@ class HotelSettingsRecordDocumentEquality
         e1?.collectable == e2?.collectable &&
         e1?.promoOn == e2?.promoOn &&
         e1?.promoDetail == e2?.promoDetail &&
-        e1?.promoPercent == e2?.promoPercent;
+        e1?.promoPercent == e2?.promoPercent &&
+        e1?.demoAccess == e2?.demoAccess;
   }
 
   @override
@@ -183,7 +192,8 @@ class HotelSettingsRecordDocumentEquality
         e?.collectable,
         e?.promoOn,
         e?.promoDetail,
-        e?.promoPercent
+        e?.promoPercent,
+        e?.demoAccess
       ]);
 
   @override

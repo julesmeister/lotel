@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'new_option_model.dart';
 export 'new_option_model.dart';
 
@@ -44,6 +45,8 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -391,31 +394,37 @@ class _NewOptionWidgetState extends State<NewOptionWidget> {
                                   color: FlutterFlowTheme.of(context).secondary,
                                   size: 24.0,
                                 ),
-                                onPressed: () async {
-                                  await OptionsRecord.collection
-                                      .doc()
-                                      .set(createOptionsRecordData(
-                                        type: _model.type,
-                                        choice: functions.startBigLetter(
-                                            _model.nameTextController.text),
-                                      ));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Option Added!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                        ),
-                                      ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                },
+                                onPressed: (FFAppState().role == 'demo')
+                                    ? null
+                                    : () async {
+                                        await OptionsRecord.collection
+                                            .doc()
+                                            .set(createOptionsRecordData(
+                                              type: _model.type,
+                                              choice: functions.startBigLetter(
+                                                  _model
+                                                      .nameTextController.text),
+                                            ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Option Added!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary,
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      },
                               ),
                             ),
                           ],

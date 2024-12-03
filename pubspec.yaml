@@ -69,7 +69,7 @@ dependencies:
   path_provider_foundation: 2.4.0
   path_provider_linux: 2.2.1
   path_provider_platform_interface: 2.1.2
-  path_provider_windows: 2.2.1
+  path_provider_windows: 2.3.0
   pdf: ^3.10.8
   percent_indicator: 4.2.2
   pie_chart: ^5.4.0

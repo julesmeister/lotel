@@ -1,4 +1,6 @@
 import '/backend/backend.dart';
+import '/components/options/option_to_remove_book_remittance/option_to_remove_book_remittance_widget.dart';
+import '/components/options/option_to_remove_expense_remittance/option_to_remove_expense_remittance_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'remittance_specific_transactions_widget.dart'
     show RemittanceSpecificTransactionsWidget;
@@ -50,5 +52,106 @@ class RemittanceSpecificTransactionsModel
   @override
   void dispose() {
     tabBarController?.dispose();
+  }
+
+  /// Action blocks.
+  Future optionToBooking(
+    BuildContext context, {
+    TransactionsRecord? transaction,
+    DocumentReference? remittance,
+  }) async {
+    if (FFAppState().role != 'demo') {
+      var confirmDialogResponse = await showDialog<bool>(
+            context: context,
+            builder: (alertDialogContext) {
+              return AlertDialog(
+                title: const Text('Remove'),
+                content: const Text(
+                    'This will remove this booking from this remittance as well as adjust the values from its respective remittance.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(alertDialogContext, false),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(alertDialogContext, true),
+                    child: const Text('Confirm'),
+                  ),
+                ],
+              );
+            },
+          ) ??
+          false;
+      if (confirmDialogResponse) {
+        await showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (context) {
+            return GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Padding(
+                padding: MediaQuery.viewInsetsOf(context),
+                child: OptionToRemoveBookRemittanceWidget(
+                  remittance: remittance!,
+                  transaction: transaction!,
+                ),
+              ),
+            );
+          },
+        );
+      }
+    }
+  }
+
+  Future optionToExpense(
+    BuildContext context, {
+    required DocumentReference? remittance,
+    required TransactionsRecord? transaction,
+  }) async {
+    if (FFAppState().role != 'demo') {
+      var confirmDialogResponse = await showDialog<bool>(
+            context: context,
+            builder: (alertDialogContext) {
+              return AlertDialog(
+                title: const Text('Delete'),
+                content: const Text(
+                    'This will delete the transaction as well as adjust the values from the respective remittance.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(alertDialogContext, false),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(alertDialogContext, true),
+                    child: const Text('Confirm'),
+                  ),
+                ],
+              );
+            },
+          ) ??
+          false;
+      if (confirmDialogResponse) {
+        await showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          enableDrag: false,
+          useSafeArea: true,
+          context: context,
+          builder: (context) {
+            return GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Padding(
+                padding: MediaQuery.viewInsetsOf(context),
+                child: OptionToRemoveExpenseRemittanceWidget(
+                  remittance: remittance!,
+                  transaction: transaction!,
+                ),
+              ),
+            );
+          },
+        );
+      }
+    }
   }
 }

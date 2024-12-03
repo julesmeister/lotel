@@ -55,8 +55,12 @@ class _ExtraRemittanceWidgetState extends State<ExtraRemittanceWidget> {
       safeSetState(() {
         _model.extraTextController?.text =
             functions.absolute(_model.change!.total).toString();
-        _model.extraTextController?.selection = TextSelection.collapsed(
-            offset: _model.extraTextController!.text.length);
+        _model.extraFocusNode?.requestFocus();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _model.extraTextController?.selection = TextSelection.collapsed(
+            offset: _model.extraTextController!.text.length,
+          );
+        });
       });
     });
 
@@ -243,31 +247,55 @@ class _ExtraRemittanceWidgetState extends State<ExtraRemittanceWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await _model.changeTransaction!.reference
-                                      .update(createTransactionsRecordData(
-                                    total: (String extra) {
-                                      return double.parse(extra.startsWith('-')
-                                          ? extra.substring(1)
-                                          : '-$extra');
-                                    }(_model.extraTextController.text),
-                                    staff: currentUserReference,
-                                  ));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Excess remitted amount updated!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
+                                  if (FFAppState().role != 'demo') {
+                                    if (FFAppState().role == 'admin') {
+                                      await _model.changeTransaction!.reference
+                                          .update(createTransactionsRecordData(
+                                        total: (String extra) {
+                                          return double.parse(
+                                              extra.startsWith('-')
+                                                  ? extra.substring(1)
+                                                  : '-$extra');
+                                        }(_model.extraTextController.text),
+                                        staff: currentUserReference,
+                                      ));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Excess remitted amount updated!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
                                         ),
+                                      );
+                                      Navigator.pop(context);
+                                    }
+                                  } else {
+                                    // inaccessible
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Inaccessible To Test User',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

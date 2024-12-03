@@ -160,30 +160,33 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                 borderRadius: 30.0,
                 borderWidth: 1.0,
                 buttonSize: 60.0,
+                disabledIconColor: FlutterFlowTheme.of(context).alternate,
                 icon: Icon(
                   Icons.add,
                   color: FlutterFlowTheme.of(context).primaryText,
                   size: 24.0,
                 ),
-                onPressed: () async {
-                  await showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (context) {
-                      return GestureDetector(
-                        onTap: () => FocusScope.of(context).unfocus(),
-                        child: Padding(
-                          padding: MediaQuery.viewInsetsOf(context),
-                          child: const SizedBox(
-                            height: double.infinity,
-                            child: NewGroceryWidget(),
-                          ),
-                        ),
-                      );
-                    },
-                  ).then((value) => safeSetState(() {}));
-                },
+                onPressed: (FFAppState().role == 'demo')
+                    ? null
+                    : () async {
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) {
+                            return GestureDetector(
+                              onTap: () => FocusScope.of(context).unfocus(),
+                              child: Padding(
+                                padding: MediaQuery.viewInsetsOf(context),
+                                child: const SizedBox(
+                                  height: double.infinity,
+                                  child: NewGroceryWidget(),
+                                ),
+                              ),
+                            );
+                          },
+                        ).then((value) => safeSetState(() {}));
+                      },
               ),
             ),
           ],
@@ -263,7 +266,7 @@ class _GroceryListWidgetState extends State<GroceryListWidget>
                           unselectedLabelStyle: const TextStyle(),
                           labelColor: FlutterFlowTheme.of(context).primaryText,
                           unselectedLabelColor:
-                              FlutterFlowTheme.of(context).primaryText,
+                              FlutterFlowTheme.of(context).secondaryText,
                           backgroundColor:
                               FlutterFlowTheme.of(context).secondaryBackground,
                           unselectedBackgroundColor:

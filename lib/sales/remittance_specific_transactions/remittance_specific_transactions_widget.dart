@@ -1,6 +1,4 @@
 import '/backend/backend.dart';
-import '/components/options/option_to_remove_book_remittance/option_to_remove_book_remittance_widget.dart';
-import '/components/options/option_to_remove_expense_remittance/option_to_remove_expense_remittance_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -237,7 +235,7 @@ class _RemittanceSpecificTransactionsWidgetState
                             labelColor:
                                 FlutterFlowTheme.of(context).primaryText,
                             unselectedLabelColor:
-                                FlutterFlowTheme.of(context).primaryText,
+                                FlutterFlowTheme.of(context).secondaryText,
                             backgroundColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                             unselectedBackgroundColor:
@@ -524,67 +522,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onLongPress: () async {
-                                                  var confirmDialogResponse =
-                                                      await showDialog<bool>(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: const Text(
-                                                                    'Remove'),
-                                                                content: const Text(
-                                                                    'This will remove this booking from this remittance as well as adjust the values from its respective remittance.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                    child: const Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                    child: const Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          ) ??
-                                                          false;
-                                                  if (confirmDialogResponse) {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () =>
-                                                              FocusScope.of(
-                                                                      context)
-                                                                  .unfocus(),
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child:
-                                                                OptionToRemoveBookRemittanceWidget(
-                                                              remittance: widget
-                                                                  .remittanceRef!,
-                                                              transaction:
-                                                                  bookingsItem,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() {}));
-                                                  }
+                                                  await _model.optionToBooking(
+                                                    context,
+                                                    transaction: bookingsItem,
+                                                    remittance:
+                                                        widget.remittanceRef,
+                                                  );
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -1193,69 +1136,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
-                                                  var confirmDialogResponse =
-                                                      await showDialog<bool>(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: const Text(
-                                                                    'Delete'),
-                                                                content: const Text(
-                                                                    'This will delete the transaction as well as adjust the values from the respective remittance.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                    child: const Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                    child: const Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          ) ??
-                                                          false;
-                                                  if (confirmDialogResponse) {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      enableDrag: false,
-                                                      useSafeArea: true,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () =>
-                                                              FocusScope.of(
-                                                                      context)
-                                                                  .unfocus(),
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child:
-                                                                OptionToRemoveExpenseRemittanceWidget(
-                                                              remittance: widget
-                                                                  .remittanceRef!,
-                                                              transaction:
-                                                                  expensesItem,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() {}));
-                                                  }
+                                                  await _model.optionToBooking(
+                                                    context,
+                                                    transaction: expensesItem,
+                                                    remittance:
+                                                        widget.remittanceRef,
+                                                  );
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -1719,67 +1605,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onLongPress: () async {
-                                                  var confirmDialogResponse =
-                                                      await showDialog<bool>(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: const Text(
-                                                                    'Remove'),
-                                                                content: const Text(
-                                                                    'This will remove this booking from this remittance as well as adjust the values from its respective remittance.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                    child: const Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                    child: const Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          ) ??
-                                                          false;
-                                                  if (confirmDialogResponse) {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () =>
-                                                              FocusScope.of(
-                                                                      context)
-                                                                  .unfocus(),
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child:
-                                                                OptionToRemoveBookRemittanceWidget(
-                                                              remittance: widget
-                                                                  .remittanceRef!,
-                                                              transaction:
-                                                                  bookingsItem,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() {}));
-                                                  }
+                                                  await _model.optionToBooking(
+                                                    context,
+                                                    transaction: bookingsItem,
+                                                    remittance:
+                                                        widget.remittanceRef,
+                                                  );
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -2665,7 +2496,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                             .toList().isNotEmpty)
                                       Builder(
                                         builder: (context) {
-                                          final goods = _model.transactions
+                                          final expenseTab = _model.transactions
                                               .where((e) => e.type == 'expense')
                                               .toList();
 
@@ -2679,10 +2510,11 @@ class _RemittanceSpecificTransactionsWidgetState
                                             primary: false,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
-                                            itemCount: goods.length,
-                                            itemBuilder: (context, goodsIndex) {
-                                              final goodsItem =
-                                                  goods[goodsIndex];
+                                            itemCount: expenseTab.length,
+                                            itemBuilder:
+                                                (context, expenseTabIndex) {
+                                              final expenseTabItem =
+                                                  expenseTab[expenseTabIndex];
                                               return InkWell(
                                                 splashColor: Colors.transparent,
                                                 focusColor: Colors.transparent,
@@ -2690,69 +2522,12 @@ class _RemittanceSpecificTransactionsWidgetState
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
-                                                  var confirmDialogResponse =
-                                                      await showDialog<bool>(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: const Text(
-                                                                    'Delete'),
-                                                                content: const Text(
-                                                                    'This will delete the transaction as well as adjust the values from the respective remittance.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            false),
-                                                                    child: const Text(
-                                                                        'Cancel'),
-                                                                  ),
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext,
-                                                                            true),
-                                                                    child: const Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          ) ??
-                                                          false;
-                                                  if (confirmDialogResponse) {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      enableDrag: false,
-                                                      useSafeArea: true,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return GestureDetector(
-                                                          onTap: () =>
-                                                              FocusScope.of(
-                                                                      context)
-                                                                  .unfocus(),
-                                                          child: Padding(
-                                                            padding: MediaQuery
-                                                                .viewInsetsOf(
-                                                                    context),
-                                                            child:
-                                                                OptionToRemoveExpenseRemittanceWidget(
-                                                              remittance: widget
-                                                                  .remittanceRef!,
-                                                              transaction:
-                                                                  goodsItem,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).then((value) =>
-                                                        safeSetState(() {}));
-                                                  }
+                                                  await _model.optionToBooking(
+                                                    context,
+                                                    transaction: expenseTabItem,
+                                                    remittance:
+                                                        widget.remittanceRef,
+                                                  );
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -2833,7 +2608,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       children: [
                                                                         TextSpan(
                                                                           text:
-                                                                              functions.startBigLetter(goodsItem.description),
+                                                                              functions.startBigLetter(expenseTabItem.description),
                                                                           style:
                                                                               const TextStyle(),
                                                                         )
@@ -2863,7 +2638,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                     child: FutureBuilder<
                                                                         UsersRecord>(
                                                                       future: UsersRecord.getDocumentOnce(
-                                                                          goodsItem
+                                                                          expenseTabItem
                                                                               .staff!),
                                                                       builder:
                                                                           (context,
@@ -2889,7 +2664,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             snapshot.data!;
 
                                                                         return Text(
-                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("MMM d y h:mm a", goodsItem.date)}',
+                                                                          'Issued by ${textUsersRecord.displayName} on ${dateTimeFormat("MMM d y h:mm a", expenseTabItem.date)}',
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .labelMedium
                                                                               .override(
@@ -2900,7 +2675,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                       },
                                                                     ),
                                                                   ),
-                                                                  if (goodsItem
+                                                                  if (expenseTabItem
                                                                           .goods.isNotEmpty)
                                                                     Padding(
                                                                       padding: const EdgeInsetsDirectional.fromSTEB(
@@ -2934,7 +2709,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                           children: [
                                                                             Container(
                                                                               width: 4.0,
-                                                                              height: (20 * goodsItem.goods.length).toDouble(),
+                                                                              height: (20 * expenseTabItem.goods.length).toDouble(),
                                                                               decoration: BoxDecoration(
                                                                                 color: const Color(0xFF4B39EF),
                                                                                 borderRadius: BorderRadius.circular(4.0),
@@ -2943,7 +2718,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             Padding(
                                                                               padding: const EdgeInsets.all(10.0),
                                                                               child: Text(
-                                                                                functions.cartToTextSummary(goodsItem.goods.toList())!,
+                                                                                functions.cartToTextSummary(expenseTabItem.goods.toList())!,
                                                                                 style: FlutterFlowTheme.of(context).labelMedium.override(
                                                                                       fontFamily: 'Readex Pro',
                                                                                       letterSpacing: 0.0,
@@ -2979,7 +2754,7 @@ class _RemittanceSpecificTransactionsWidgetState
                                                                             10.0),
                                                                 child: Text(
                                                                   formatNumber(
-                                                                    goodsItem
+                                                                    expenseTabItem
                                                                         .total,
                                                                     formatType:
                                                                         FormatType

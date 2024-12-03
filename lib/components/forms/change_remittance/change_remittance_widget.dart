@@ -63,8 +63,12 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
       safeSetState(() {
         _model.amountTextController?.text =
             functions.netOfTransactions(_model.toRemit!.toList()).toString();
-        _model.amountTextController?.selection = TextSelection.collapsed(
-            offset: _model.amountTextController!.text.length);
+        _model.amountFocusNode?.requestFocus();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _model.amountTextController?.selection = TextSelection.collapsed(
+            offset: _model.amountTextController!.text.length,
+          );
+        });
       });
       _model.toRemitAmount =
           functions.netOfTransactions(_model.toRemit!.toList());
@@ -320,13 +324,19 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                             .text))
                                                     .abs()
                                                     .toString());
-                                                _model.changeExtraTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .changeExtraTextController!
-                                                            .text
-                                                            .length);
+                                                _model.changeExtraFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.changeExtraTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .changeExtraTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                             },
                                           ),
@@ -384,13 +394,22 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                     .text))
                                                             .abs()
                                                             .toString());
-                                                        _model.changeExtraTextController
-                                                                ?.selection =
-                                                            TextSelection.collapsed(
-                                                                offset: _model
-                                                                    .changeExtraTextController!
-                                                                    .text
-                                                                    .length);
+                                                        _model
+                                                            .changeExtraFocusNode
+                                                            ?.requestFocus();
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          _model.changeExtraTextController
+                                                                  ?.selection =
+                                                              TextSelection
+                                                                  .collapsed(
+                                                            offset: _model
+                                                                .changeExtraTextController!
+                                                                .text
+                                                                .length,
+                                                          );
+                                                        });
                                                       });
                                                       safeSetState(() {});
                                                     },
@@ -449,13 +468,19 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                 .text)
                                                             .abs())
                                                     .toString());
-                                                _model.amountTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .amountTextController!
-                                                            .text
-                                                            .length);
+                                                _model.amountFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.amountTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .amountTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                             },
                                           ),
@@ -514,13 +539,21 @@ class _ChangeRemittanceWidgetState extends State<ChangeRemittanceWidget> {
                                                                         .text)
                                                                     .abs())
                                                             .toString());
-                                                        _model.amountTextController
-                                                                ?.selection =
-                                                            TextSelection.collapsed(
-                                                                offset: _model
-                                                                    .amountTextController!
-                                                                    .text
-                                                                    .length);
+                                                        _model.amountFocusNode
+                                                            ?.requestFocus();
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          _model.amountTextController
+                                                                  ?.selection =
+                                                              TextSelection
+                                                                  .collapsed(
+                                                            offset: _model
+                                                                .amountTextController!
+                                                                .text
+                                                                .length,
+                                                          );
+                                                        });
                                                       });
                                                       safeSetState(() {});
                                                     },

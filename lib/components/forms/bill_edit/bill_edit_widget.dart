@@ -155,99 +155,122 @@ class _BillEditWidgetState extends State<BillEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.amount !=
-                                      (double.parse(
-                                          _model.amountTextController.text))) {
-                                    // statsThisBillBelongsTo
-                                    _model.rightStats =
-                                        await queryStatsRecordOnce(
-                                      queryBuilder: (statsRecord) => statsRecord
-                                          .where(
-                                            'hotel',
-                                            isEqualTo: FFAppState().hotel,
-                                          )
-                                          .where(
-                                            'month',
-                                            isEqualTo: dateTimeFormat(
-                                                "MMMM", widget.bill?.date),
-                                          )
-                                          .where(
-                                            'year',
-                                            isEqualTo: dateTimeFormat(
-                                                "y", widget.bill?.date),
-                                          ),
-                                      singleRecord: true,
-                                    ).then((s) => s.firstOrNull);
-                                    // update bill stat
+                                  if (FFAppState().role != 'demo') {
+                                    if (widget.amount !=
+                                        (double.parse(_model
+                                            .amountTextController.text))) {
+                                      // statsThisBillBelongsTo
+                                      _model.rightStats =
+                                          await queryStatsRecordOnce(
+                                        queryBuilder: (statsRecord) =>
+                                            statsRecord
+                                                .where(
+                                                  'hotel',
+                                                  isEqualTo: FFAppState().hotel,
+                                                )
+                                                .where(
+                                                  'month',
+                                                  isEqualTo: dateTimeFormat(
+                                                      "MMMM",
+                                                      widget.bill?.date),
+                                                )
+                                                .where(
+                                                  'year',
+                                                  isEqualTo: dateTimeFormat(
+                                                      "y", widget.bill?.date),
+                                                ),
+                                        singleRecord: true,
+                                      ).then((s) => s.firstOrNull);
+                                      // update bill stat
 
-                                    await _model.rightStats!.reference.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'bills': FieldValue.increment(
-                                              double.parse(_model
-                                                      .amountTextController
-                                                      .text) -
-                                                  (widget.amount!)),
-                                        },
-                                      ),
-                                    });
-                                  }
-
-                                  await BillChangesRecord.collection
-                                      .doc()
-                                      .set(createBillChangesRecordData(
-                                        date: getCurrentTimestamp,
-                                        description:
-                                            functions.changesInBillDescription(
-                                                widget.description,
-                                                _model.descTextController.text,
-                                                widget.amount,
-                                                double.tryParse(_model
-                                                    .amountTextController
-                                                    .text)),
-                                        staff: currentUserReference,
-                                        hotel: FFAppState().hotel,
-                                      ));
-                                  // choices
-                                  _model.choices = await queryOptionsRecordOnce(
-                                    queryBuilder: (optionsRecord) =>
-                                        optionsRecord.where(
-                                      'type',
-                                      isEqualTo: 'bill',
-                                    ),
-                                  );
-                                  // update bill
-
-                                  await widget.bill!.reference
-                                      .update(createBillsRecordData(
-                                    description: functions
-                                        .replaceBillWithConventionalString(
-                                            functions.startBigLetter(
-                                                _model.descTextController.text),
-                                            _model.choices!
-                                                .map((e) => e.choice)
-                                                .toList()),
-                                    amount: double.tryParse(
-                                        _model.amountTextController.text),
-                                    afterDue: double.tryParse(
-                                        _model.afterdueTextController.text),
-                                  ));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Bill is now updated!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
+                                      await _model.rightStats!.reference
+                                          .update({
+                                        ...mapToFirestore(
+                                          {
+                                            'bills': FieldValue.increment(
+                                                double.parse(_model
+                                                        .amountTextController
+                                                        .text) -
+                                                    (widget.amount!)),
+                                          },
                                         ),
+                                      });
+                                    }
+
+                                    await BillChangesRecord.collection
+                                        .doc()
+                                        .set(createBillChangesRecordData(
+                                          date: getCurrentTimestamp,
+                                          description: functions
+                                              .changesInBillDescription(
+                                                  widget.description,
+                                                  _model
+                                                      .descTextController.text,
+                                                  widget.amount,
+                                                  double.tryParse(_model
+                                                      .amountTextController
+                                                      .text)),
+                                          staff: currentUserReference,
+                                          hotel: FFAppState().hotel,
+                                        ));
+                                    // choices
+                                    _model.choices =
+                                        await queryOptionsRecordOnce(
+                                      queryBuilder: (optionsRecord) =>
+                                          optionsRecord.where(
+                                        'type',
+                                        isEqualTo: 'bill',
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
+                                    );
+                                    // update bill
+
+                                    await widget.bill!.reference
+                                        .update(createBillsRecordData(
+                                      description: functions
+                                          .replaceBillWithConventionalString(
+                                              functions.startBigLetter(_model
+                                                  .descTextController.text),
+                                              _model.choices!
+                                                  .map((e) => e.choice)
+                                                  .toList()),
+                                      amount: double.tryParse(
+                                          _model.amountTextController.text),
+                                      afterDue: double.tryParse(
+                                          _model.afterdueTextController.text),
+                                    ));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Bill is now updated!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  } else {
+                                    // inaccessible
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Inaccessible To Test User',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                  }
 
                                   safeSetState(() {});
                                 },

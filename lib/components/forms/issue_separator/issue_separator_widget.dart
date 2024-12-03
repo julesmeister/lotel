@@ -10,6 +10,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'issue_separator_model.dart';
 export 'issue_separator_model.dart';
 
@@ -123,6 +124,8 @@ class _IssueSeparatorWidgetState extends State<IssueSeparatorWidget>
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -391,78 +394,81 @@ class _IssueSeparatorWidgetState extends State<IssueSeparatorWidget>
                   child: Align(
                     alignment: const AlignmentDirectional(1.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: () async {
-                        if (_model.issueCount == 1) {
-                          // update issue with the choices
+                      onPressed: (FFAppState().role == 'demo')
+                          ? null
+                          : () async {
+                              if (_model.issueCount == 1) {
+                                // update issue with the choices
 
-                          await widget.issue!.reference
-                              .update(createIssuesRecordData(
-                            detail: functions.issueInOrderText(
-                                _model.choicesValues!.toList(),
-                                widget.issue!.detail),
-                          ));
-                          // saved!
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                '${functions.issueInOrderText(_model.choicesValues!.toList(), widget.issue!.detail)} saved!',
-                                style: TextStyle(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                ),
-                              ),
-                              duration: const Duration(milliseconds: 4000),
-                              backgroundColor:
-                                  FlutterFlowTheme.of(context).secondary,
-                            ),
-                          );
-                        } else {
-                          if (_model.words.isNotEmpty) {
-                            // new separated issue
-
-                            await IssuesRecord.collection
-                                .doc()
-                                .set(createIssuesRecordData(
-                                  date: widget.issue?.date,
+                                await widget.issue!.reference
+                                    .update(createIssuesRecordData(
                                   detail: functions.issueInOrderText(
                                       _model.choicesValues!.toList(),
                                       widget.issue!.detail),
-                                  status: widget.issue?.status,
-                                  hotel: widget.issue?.hotel,
-                                  staffName: widget.issue?.staffName,
                                 ));
-                            // saved!
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  '${functions.issueInOrderText(_model.choicesValues!.toList(), widget.issue!.detail)} saved!',
-                                  style: TextStyle(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
+                                // saved!
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      '${functions.issueInOrderText(_model.choicesValues!.toList(), widget.issue!.detail)} saved!',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: const Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
                                   ),
-                                ),
-                                duration: const Duration(milliseconds: 4000),
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).secondary,
-                              ),
-                            );
-                          }
-                        }
+                                );
+                              } else {
+                                if (_model.words.isNotEmpty) {
+                                  // new separated issue
 
-                        // next issue count
-                        _model.issueCount = _model.issueCount + 1;
-                        _model.addToNewIssues(functions.issueInOrderText(
-                            _model.choicesValues!.toList(),
-                            widget.issue!.detail));
-                        safeSetState(() {});
-                        // remove selection in choices
-                        safeSetState(() {
-                          _model.choicesValueController?.value = ([]);
-                        });
-                        if (_model.words.isEmpty) {
-                          context.safePop();
-                        }
-                      },
+                                  await IssuesRecord.collection
+                                      .doc()
+                                      .set(createIssuesRecordData(
+                                        date: widget.issue?.date,
+                                        detail: functions.issueInOrderText(
+                                            _model.choicesValues!.toList(),
+                                            widget.issue!.detail),
+                                        status: widget.issue?.status,
+                                        hotel: widget.issue?.hotel,
+                                        staffName: widget.issue?.staffName,
+                                      ));
+                                  // saved!
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        '${functions.issueInOrderText(_model.choicesValues!.toList(), widget.issue!.detail)} saved!',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                      ),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondary,
+                                    ),
+                                  );
+                                }
+                              }
+
+                              // next issue count
+                              _model.issueCount = _model.issueCount + 1;
+                              _model.addToNewIssues(functions.issueInOrderText(
+                                  _model.choicesValues!.toList(),
+                                  widget.issue!.detail));
+                              safeSetState(() {});
+                              // remove selection in choices
+                              safeSetState(() {
+                                _model.choicesValueController?.value = ([]);
+                              });
+                              if (_model.words.isEmpty) {
+                                context.safePop();
+                              }
+                            },
                       text: 'Next',
                       options: FFButtonOptions(
                         width: 90.0,

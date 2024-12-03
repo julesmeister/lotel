@@ -366,109 +366,134 @@ class _RoomAddEditWidgetState extends State<RoomAddEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.edit == false) {
-                                    var roomsRecordReference =
-                                        RoomsRecord.collection.doc();
-                                    await roomsRecordReference
-                                        .set(createRoomsRecordData(
-                                      number: int.tryParse(
-                                          _model.numberTextController.text),
-                                      capacity: int.tryParse(
-                                          _model.capacityTextController.text),
-                                      price: double.tryParse(
-                                          _model.priceTextController.text),
-                                      vacant: true,
-                                      guests: 0,
-                                      hotel: FFAppState().hotel,
-                                    ));
-                                    _model.createRoom =
-                                        RoomsRecord.getDocumentFromData(
-                                            createRoomsRecordData(
-                                              number: int.tryParse(_model
-                                                  .numberTextController.text),
-                                              capacity: int.tryParse(_model
-                                                  .capacityTextController.text),
-                                              price: double.tryParse(_model
-                                                  .priceTextController.text),
-                                              vacant: true,
-                                              guests: 0,
-                                              hotel: FFAppState().hotel,
-                                            ),
-                                            roomsRecordReference);
-                                    // append roomUsage
-
-                                    await FFAppState().statsReference!.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'roomUsage': FieldValue.arrayUnion([
-                                            getRoomUsageFirestoreData(
-                                              updateRoomUsageStruct(
-                                                RoomUsageStruct(
-                                                  number: widget.number,
-                                                  use: 0,
-                                                ),
-                                                clearUnsetFields: false,
-                                              ),
-                                              true,
-                                            )
-                                          ]),
-                                        },
-                                      ),
-                                    });
-                                    // history creation
-
-                                    await HistoryRecord.createDoc(
-                                            _model.createRoom!.reference)
-                                        .set({
-                                      ...createHistoryRecordData(
-                                        description: 'Room created!',
-                                        staff: currentUserReference,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                        },
-                                      ),
-                                    });
-                                  } else {
-                                    await widget.roomRef!
-                                        .update(createRoomsRecordData(
-                                      number: int.tryParse(
-                                          _model.numberTextController.text),
-                                      capacity: int.tryParse(
-                                          _model.capacityTextController.text),
-                                      price: double.tryParse(
-                                          _model.priceTextController.text),
-                                    ));
-                                    // history update
-
-                                    await HistoryRecord.createDoc(
-                                            widget.roomRef!)
-                                        .set({
-                                      ...createHistoryRecordData(
-                                        description: functions
-                                            .roomUpdateHistoryDescription(
-                                                widget.number!,
-                                                widget.price!,
-                                                widget.capacity!,
-                                                int.parse(_model
+                                  if (FFAppState().role != 'demo') {
+                                    if (widget.edit == false) {
+                                      var roomsRecordReference =
+                                          RoomsRecord.collection.doc();
+                                      await roomsRecordReference
+                                          .set(createRoomsRecordData(
+                                        number: int.tryParse(
+                                            _model.numberTextController.text),
+                                        capacity: int.tryParse(
+                                            _model.capacityTextController.text),
+                                        price: double.tryParse(
+                                            _model.priceTextController.text),
+                                        vacant: true,
+                                        guests: 0,
+                                        hotel: FFAppState().hotel,
+                                      ));
+                                      _model.createRoom =
+                                          RoomsRecord.getDocumentFromData(
+                                              createRoomsRecordData(
+                                                number: int.tryParse(_model
                                                     .numberTextController.text),
-                                                double.parse(_model
-                                                    .priceTextController.text),
-                                                int.parse(_model
+                                                capacity: int.tryParse(_model
                                                     .capacityTextController
-                                                    .text)),
-                                        staff: currentUserReference,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                        },
-                                      ),
-                                    });
-                                  }
+                                                    .text),
+                                                price: double.tryParse(_model
+                                                    .priceTextController.text),
+                                                vacant: true,
+                                                guests: 0,
+                                                hotel: FFAppState().hotel,
+                                              ),
+                                              roomsRecordReference);
+                                      // append roomUsage
 
-                                  Navigator.pop(context);
+                                      await FFAppState()
+                                          .statsReference!
+                                          .update({
+                                        ...mapToFirestore(
+                                          {
+                                            'roomUsage': FieldValue.arrayUnion([
+                                              getRoomUsageFirestoreData(
+                                                updateRoomUsageStruct(
+                                                  RoomUsageStruct(
+                                                    number: widget.number,
+                                                    use: 0,
+                                                  ),
+                                                  clearUnsetFields: false,
+                                                ),
+                                                true,
+                                              )
+                                            ]),
+                                          },
+                                        ),
+                                      });
+                                      // history creation
+
+                                      await HistoryRecord.createDoc(
+                                              _model.createRoom!.reference)
+                                          .set({
+                                        ...createHistoryRecordData(
+                                          description: 'Room created!',
+                                          staff: currentUserReference,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                    } else {
+                                      await widget.roomRef!
+                                          .update(createRoomsRecordData(
+                                        number: int.tryParse(
+                                            _model.numberTextController.text),
+                                        capacity: int.tryParse(
+                                            _model.capacityTextController.text),
+                                        price: double.tryParse(
+                                            _model.priceTextController.text),
+                                      ));
+                                      // history update
+
+                                      await HistoryRecord.createDoc(
+                                              widget.roomRef!)
+                                          .set({
+                                        ...createHistoryRecordData(
+                                          description: functions
+                                              .roomUpdateHistoryDescription(
+                                                  widget.number!,
+                                                  widget.price!,
+                                                  widget.capacity!,
+                                                  int.parse(_model
+                                                      .numberTextController
+                                                      .text),
+                                                  double.parse(_model
+                                                      .priceTextController
+                                                      .text),
+                                                  int.parse(_model
+                                                      .capacityTextController
+                                                      .text)),
+                                          staff: currentUserReference,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                    }
+
+                                    Navigator.pop(context);
+                                  } else {
+                                    // inaccessible
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Inaccessible To Test User',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                  }
 
                                   safeSetState(() {});
                                 },

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'salary_edit_model.dart';
 export 'salary_edit_model.dart';
 
@@ -37,8 +38,12 @@ class _SalaryEditWidgetState extends State<SalaryEditWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       safeSetState(() {
         _model.salaryTextController?.text = widget.stats!.salaries.toString();
-        _model.salaryTextController?.selection = TextSelection.collapsed(
-            offset: _model.salaryTextController!.text.length);
+        _model.salaryFocusNode?.requestFocus();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _model.salaryTextController?.selection = TextSelection.collapsed(
+            offset: _model.salaryTextController!.text.length,
+          );
+        });
       });
     });
 
@@ -57,6 +62,8 @@ class _SalaryEditWidgetState extends State<SalaryEditWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -221,27 +228,45 @@ class _SalaryEditWidgetState extends State<SalaryEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await widget.stats!.reference
-                                      .update(createStatsRecordData(
-                                    salaries: double.tryParse(
-                                        _model.salaryTextController.text),
-                                  ));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Total compensation sum is now updated!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
+                                  if (FFAppState().role != 'demo') {
+                                    await widget.stats!.reference
+                                        .update(createStatsRecordData(
+                                      salaries: double.tryParse(
+                                          _model.salaryTextController.text),
+                                    ));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Total compensation sum is now updated!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
                                         ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context, true);
+                                    );
+                                    Navigator.pop(context, true);
+                                  } else {
+                                    // inaccessible
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Inaccessible To Test User',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

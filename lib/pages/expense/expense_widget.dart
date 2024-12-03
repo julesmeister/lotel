@@ -1073,21 +1073,30 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                   safeSetState(() {
                                     _model.descriptionTextController?.text =
                                         'Food Allowance for Staff';
-                                    _model.descriptionTextController
-                                            ?.selection =
-                                        TextSelection.collapsed(
-                                            offset: _model
-                                                .descriptionTextController!
-                                                .text
-                                                .length);
+                                    _model.descriptionFocusNode?.requestFocus();
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      _model.descriptionTextController
+                                          ?.selection = TextSelection.collapsed(
+                                        offset: _model
+                                            .descriptionTextController!
+                                            .text
+                                            .length,
+                                      );
+                                    });
                                   });
                                   // 150 amount
                                   safeSetState(() {
                                     _model.amountTextController?.text = '150';
-                                    _model.amountTextController?.selection =
-                                        TextSelection.collapsed(
-                                            offset: _model.amountTextController!
-                                                .text.length);
+                                    _model.amountFocusNode?.requestFocus();
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      _model.amountTextController?.selection =
+                                          TextSelection.collapsed(
+                                        offset: _model
+                                            .amountTextController!.text.length,
+                                      );
+                                    });
                                   });
                                   // enable submit
                                   _model.disableSubmit = false;
@@ -1097,24 +1106,31 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                   safeSetState(() {
                                     _model.descriptionTextController?.text =
                                         _model.choicesValue!;
-                                    _model.descriptionTextController
-                                            ?.selection =
-                                        TextSelection.collapsed(
-                                            offset: _model
-                                                .descriptionTextController!
-                                                .text
-                                                .length);
+                                    _model.descriptionFocusNode?.requestFocus();
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      _model.descriptionTextController
+                                          ?.selection = TextSelection.collapsed(
+                                        offset: _model
+                                            .descriptionTextController!
+                                            .text
+                                            .length,
+                                      );
+                                    });
                                   });
                                   if (_model.choicesValue == 'Pamasahe') {
                                     // 100 pamasahe
                                     safeSetState(() {
                                       _model.amountTextController?.text = '100';
-                                      _model.amountTextController?.selection =
-                                          TextSelection.collapsed(
-                                              offset: _model
-                                                  .amountTextController!
-                                                  .text
-                                                  .length);
+                                      _model.amountFocusNode?.requestFocus();
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback((_) {
+                                        _model.amountTextController?.selection =
+                                            TextSelection.collapsed(
+                                          offset: _model.amountTextController!
+                                              .text.length,
+                                        );
+                                      });
                                     });
                                     // enable submit
                                     _model.disableSubmit = false;
@@ -1125,12 +1141,16 @@ class _ExpenseWidgetState extends State<ExpenseWidget>
                                       safeSetState(() {
                                         _model.amountTextController?.text =
                                             '10';
-                                        _model.amountTextController?.selection =
-                                            TextSelection.collapsed(
-                                                offset: _model
-                                                    .amountTextController!
-                                                    .text
-                                                    .length);
+                                        _model.amountFocusNode?.requestFocus();
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          _model.amountTextController
+                                                  ?.selection =
+                                              TextSelection.collapsed(
+                                            offset: _model.amountTextController!
+                                                .text.length,
+                                          );
+                                        });
                                       });
                                       // enable submit
                                       _model.disableSubmit = false;

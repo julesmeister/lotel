@@ -154,103 +154,128 @@ class _EditGroceryWidgetState extends State<EditGroceryWidget> {
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
-                                      if (_model.amountTextController.text !=
-                                              '') {
-                                        var confirmDialogResponse =
-                                            await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title: const Text(
-                                                          'This will alter details for this grocery.'),
-                                                      content: Text(
-                                                          'You are recording an amount of Php ${_model.amountTextController.text}.'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  false),
-                                                          child: const Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  true),
-                                                          child:
-                                                              const Text('Confirm'),
-                                                        ),
-                                                      ],
-                                                    );
+                                      if (FFAppState().role != 'demo') {
+                                        if (_model.amountTextController.text !=
+                                                '') {
+                                          var confirmDialogResponse =
+                                              await showDialog<bool>(
+                                                    context: context,
+                                                    builder:
+                                                        (alertDialogContext) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                            'This will alter details for this grocery.'),
+                                                        content: Text(
+                                                            'You are recording an amount of Php ${_model.amountTextController.text}.'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    false),
+                                                            child:
+                                                                const Text('Cancel'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    true),
+                                                            child:
+                                                                const Text('Confirm'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ) ??
+                                                  false;
+                                          if (confirmDialogResponse) {
+                                            // update grocery
+
+                                            await widget.grocery!.reference
+                                                .update(
+                                                    createGroceriesRecordData(
+                                              remark: functions.startBigLetter(
+                                                  _model.remarkTextController
+                                                      .text),
+                                              amount: double.tryParse(_model
+                                                  .amountTextController.text),
+                                            ));
+                                            if (widget.grocery?.amount
+                                                    .toString() !=
+                                                _model.amountTextController
+                                                    .text) {
+                                              // increment grocery expense
+
+                                              await FFAppState()
+                                                  .statsReference!
+                                                  .update({
+                                                ...mapToFirestore(
+                                                  {
+                                                    'groceryExpenses':
+                                                        FieldValue.increment(
+                                                            double.parse(_model
+                                                                .amountTextController
+                                                                .text)),
                                                   },
-                                                ) ??
-                                                false;
-                                        if (confirmDialogResponse) {
-                                          // update grocery
-
-                                          await widget.grocery!.reference
-                                              .update(createGroceriesRecordData(
-                                            remark: functions.startBigLetter(
-                                                _model
-                                                    .remarkTextController.text),
-                                            amount: double.tryParse(_model
-                                                .amountTextController.text),
-                                          ));
-                                          if (widget.grocery?.amount
-                                                  .toString() !=
-                                              _model
-                                                  .amountTextController.text) {
-                                            // increment grocery expense
-
-                                            await FFAppState()
-                                                .statsReference!
-                                                .update({
-                                              ...mapToFirestore(
-                                                {
-                                                  'groceryExpenses':
-                                                      FieldValue.increment(
-                                                          double.parse(_model
-                                                              .amountTextController
-                                                              .text)),
-                                                },
+                                                ),
+                                              });
+                                            }
+                                            // clear groceryHome
+                                            FFAppState()
+                                                .clearGroceryHomeCache();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Grocery updated!',
+                                                  style: TextStyle(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                  ),
+                                                ),
+                                                duration: const Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary,
                                               ),
-                                            });
+                                            );
                                           }
-                                          // clear groceryHome
-                                          FFAppState().clearGroceryHomeCache();
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(
                                               content: Text(
-                                                'Grocery updated!',
+                                                'Please enter an amount!',
                                                 style: TextStyle(
                                                   color: FlutterFlowTheme.of(
                                                           context)
-                                                      .primaryText,
+                                                      .info,
                                                 ),
                                               ),
                                               duration:
                                                   const Duration(milliseconds: 4000),
                                               backgroundColor:
                                                   FlutterFlowTheme.of(context)
-                                                      .secondary,
+                                                      .error,
                                             ),
                                           );
                                         }
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
                                       } else {
+                                        // inaccessible
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              'Please enter an amount!',
+                                              'Inaccessible To Test User',
                                               style: TextStyle(
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .info,
+                                                        .secondaryBackground,
                                               ),
                                             ),
                                             duration:

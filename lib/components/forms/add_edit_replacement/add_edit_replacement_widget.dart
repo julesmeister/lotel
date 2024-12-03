@@ -184,13 +184,19 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                                             .text) -
                                                         1)
                                                     .toString());
-                                                _model.numberTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .numberTextController!
-                                                            .text
-                                                            .length);
+                                                _model.numberFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.numberTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .numberTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '-';
                                               safeSetState(() {});
@@ -259,13 +265,19 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                                             .text) +
                                                         1)
                                                     .toString());
-                                                _model.numberTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .numberTextController!
-                                                            .text
-                                                            .length);
+                                                _model.numberFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.numberTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .numberTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '+';
                                               safeSetState(() {});
@@ -486,98 +498,120 @@ class _AddEditReplacementWidgetState extends State<AddEditReplacementWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (((String additional) {
-                                        return int.tryParse(additional) != null;
-                                      }(_model.numberTextController.text)) &&
-                                      (_model.numberTextController.text !=
-                                          '0') &&
-                                      (_model.wattsTextController.text !=
-                                          '0')) {
-                                    if (widget.replacement != null) {
-                                      // update replacement
+                                  if (FFAppState().role != 'demo') {
+                                    if (((String additional) {
+                                          return int.tryParse(additional) !=
+                                              null;
+                                        }(_model.numberTextController.text)) &&
+                                        (_model.numberTextController.text !=
+                                            '0') &&
+                                        (_model.wattsTextController.text !=
+                                            '0')) {
+                                      if (widget.replacement != null) {
+                                        // update replacement
 
-                                      await widget.replacement!.reference
-                                          .update(createReplacementRecordData(
-                                        watts: int.tryParse(
-                                            _model.wattsTextController.text),
-                                        quantity: int.tryParse(
-                                            _model.numberTextController.text),
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Record updated!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
-                                          ),
-                                          duration:
-                                              const Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
-                                      Navigator.pop(context);
-                                    } else {
-                                      // create replacement
-
-                                      await ReplacementRecord.collection
-                                          .doc()
-                                          .set({
-                                        ...createReplacementRecordData(
-                                          requestedBy: currentUserDisplayName,
+                                        await widget.replacement!.reference
+                                            .update(createReplacementRecordData(
                                           watts: int.tryParse(
                                               _model.wattsTextController.text),
-                                          location: widget.location,
                                           quantity: int.tryParse(
                                               _model.numberTextController.text),
-                                          hotel: FFAppState().hotel,
-                                          cr: widget.cr,
-                                        ),
-                                        ...mapToFirestore(
-                                          {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
-                                          },
-                                        ),
-                                      });
+                                        ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Record updated!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary,
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      } else {
+                                        // create replacement
+
+                                        await ReplacementRecord.collection
+                                            .doc()
+                                            .set({
+                                          ...createReplacementRecordData(
+                                            requestedBy: currentUserDisplayName,
+                                            watts: int.tryParse(_model
+                                                .wattsTextController.text),
+                                            location: widget.location,
+                                            quantity: int.tryParse(_model
+                                                .numberTextController.text),
+                                            hotel: FFAppState().hotel,
+                                            cr: widget.cr,
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date':
+                                                  FieldValue.serverTimestamp(),
+                                            },
+                                          ),
+                                        });
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'A new entry on replacements have been recorded!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary,
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
+                                    } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'A new entry on replacements have been recorded!',
+                                            'Make sure all fields are complete and don\'t forget to enter the correct value!',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .primaryText,
+                                                      .error,
                                             ),
                                           ),
                                           duration:
                                               const Duration(milliseconds: 4000),
                                           backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
+                                              FlutterFlowTheme.of(context).info,
                                         ),
                                       );
-                                      Navigator.pop(context);
                                     }
                                   } else {
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Make sure all fields are complete and don\'t forget to enter the correct value!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .error,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context).info,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
                                   }

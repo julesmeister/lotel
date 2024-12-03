@@ -1192,12 +1192,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                           .secondaryText,
                                 ),
                                 child: CheckboxListTile(
-                                  value: _model.checkboxListTileValue ??=
+                                  value: _model.checkboxListTileValue1 ??=
                                       adminAreaHotelSettingsRecord!
                                           .acceptNewStaff,
                                   onChanged: (newValue) async {
                                     safeSetState(() => _model
-                                        .checkboxListTileValue = newValue!);
+                                        .checkboxListTileValue1 = newValue!);
                                     if (newValue!) {
                                       await adminAreaHotelSettingsRecord!
                                           .reference
@@ -1214,6 +1214,82 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   },
                                   title: Text(
                                     'Allow New Staff Signup',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyLarge
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0.0,
+                                        ),
+                                  ),
+                                  tileColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  activeColor:
+                                      FlutterFlowTheme.of(context).primary,
+                                  checkColor: FlutterFlowTheme.of(context).info,
+                                  dense: false,
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 1.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: 50.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 0.0,
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                  offset: const Offset(
+                                    0.0,
+                                    1.0,
+                                  ),
+                                )
+                              ],
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Theme(
+                                data: ThemeData(
+                                  checkboxTheme: const CheckboxThemeData(
+                                    visualDensity: VisualDensity.compact,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  unselectedWidgetColor:
+                                      FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                ),
+                                child: CheckboxListTile(
+                                  value: _model.checkboxListTileValue2 ??=
+                                      adminAreaHotelSettingsRecord!.demoAccess,
+                                  onChanged: (newValue) async {
+                                    safeSetState(() => _model
+                                        .checkboxListTileValue2 = newValue!);
+                                    if (newValue!) {
+                                      await adminAreaHotelSettingsRecord!
+                                          .reference
+                                          .update(createHotelSettingsRecordData(
+                                        demoAccess: true,
+                                      ));
+                                    } else {
+                                      await adminAreaHotelSettingsRecord!
+                                          .reference
+                                          .update(createHotelSettingsRecordData(
+                                        demoAccess: false,
+                                      ));
+                                    }
+                                  },
+                                  title: Text(
+                                    'Allow Demo Access',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyLarge
                                         .override(

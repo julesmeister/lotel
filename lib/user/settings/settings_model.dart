@@ -13,7 +13,9 @@ class SettingsModel extends FlutterFlowModel<SettingsWidget> {
   // Stores action output result for [Firestore Query - Query a collection] action in IconButton widget.
   int? countUncollected;
   // State field(s) for CheckboxListTile widget.
-  bool? checkboxListTileValue;
+  bool? checkboxListTileValue1;
+  // State field(s) for CheckboxListTile widget.
+  bool? checkboxListTileValue2;
 
   @override
   void initState(BuildContext context) {}

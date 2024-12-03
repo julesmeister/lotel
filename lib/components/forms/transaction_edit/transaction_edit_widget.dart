@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'transaction_edit_model.dart';
 export 'transaction_edit_model.dart';
 
@@ -61,6 +62,8 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -148,67 +151,86 @@ class _TransactionEditWidgetState extends State<TransactionEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  // update transaction
+                                  if (FFAppState().role != 'demo') {
+                                    // update transaction
 
-                                  await widget.ref!
-                                      .update(createTransactionsRecordData(
-                                    description: _model.descTextController.text,
-                                    total: double.tryParse(
-                                        _model.priceTextController.text),
-                                  ));
-                                  if (widget.bookingRef != null) {
-                                    // update book total
+                                    await widget.ref!
+                                        .update(createTransactionsRecordData(
+                                      description:
+                                          _model.descTextController.text,
+                                      total: double.tryParse(
+                                          _model.priceTextController.text),
+                                    ));
+                                    if (widget.bookingRef != null) {
+                                      // update book total
 
-                                    await widget.bookingRef!.update({
-                                      ...mapToFirestore(
-                                        {
-                                          'total': FieldValue.increment(
-                                              double.parse(_model
-                                                      .priceTextController
-                                                      .text) -
-                                                  (widget.price!)),
-                                        },
-                                      ),
-                                    });
-                                    if (widget.price !=
-                                        (double.parse(
-                                            _model.priceTextController.text))) {
-                                      // create history
-
-                                      await HistoryRecord.createDoc(
-                                              widget.roomRef!)
-                                          .set({
-                                        ...createHistoryRecordData(
-                                          description:
-                                              'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceTextController.text}.',
-                                          staff: currentUserReference,
-                                          booking: widget.bookingRef,
-                                        ),
+                                      await widget.bookingRef!.update({
                                         ...mapToFirestore(
                                           {
-                                            'date':
-                                                FieldValue.serverTimestamp(),
+                                            'total': FieldValue.increment(
+                                                double.parse(_model
+                                                        .priceTextController
+                                                        .text) -
+                                                    (widget.price!)),
                                           },
                                         ),
                                       });
+                                      if (widget.price !=
+                                          (double.parse(_model
+                                              .priceTextController.text))) {
+                                        // create history
+
+                                        await HistoryRecord.createDoc(
+                                                widget.roomRef!)
+                                            .set({
+                                          ...createHistoryRecordData(
+                                            description:
+                                                'The transaction amount was changed from ${widget.price?.toString()} to ${_model.priceTextController.text}.',
+                                            staff: currentUserReference,
+                                            booking: widget.bookingRef,
+                                          ),
+                                          ...mapToFirestore(
+                                            {
+                                              'date':
+                                                  FieldValue.serverTimestamp(),
+                                            },
+                                          ),
+                                        });
+                                      }
                                     }
-                                  }
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Transaction description now updated!',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Transaction description now updated!',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
                                         ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
+                                    );
+                                    Navigator.pop(context);
+                                  } else {
+                                    // inaccessible
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Inaccessible To Test User',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

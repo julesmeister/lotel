@@ -173,13 +173,19 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                                             .text) -
                                                         1)
                                                     .toString());
-                                                _model.socketsTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .socketsTextController!
-                                                            .text
-                                                            .length);
+                                                _model.socketsFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.socketsTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .socketsTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '-';
                                               safeSetState(() {});
@@ -247,13 +253,19 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                                             .text) +
                                                         1)
                                                     .toString());
-                                                _model.socketsTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .socketsTextController!
-                                                            .text
-                                                            .length);
+                                                _model.socketsFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.socketsTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .socketsTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '+';
                                               safeSetState(() {});
@@ -454,59 +466,84 @@ class _AddEditCRWidgetState extends State<AddEditCRWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.cr != null) {
-                                    await widget.cr!.reference
-                                        .update(createComfortRoomsRecordData(
-                                      sockets: int.tryParse(
-                                          _model.socketsTextController.text),
-                                      description: functions.startBigLetter(
-                                          _model
-                                              .descriptionTextController.text),
-                                    ));
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'CR lighting updated!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                  if (FFAppState().role != 'demo') {
+                                    if (widget.cr != null) {
+                                      await widget.cr!.reference
+                                          .update(createComfortRoomsRecordData(
+                                        sockets: int.tryParse(
+                                            _model.socketsTextController.text),
+                                        description: functions.startBigLetter(
+                                            _model.descriptionTextController
+                                                .text),
+                                      ));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'CR lighting updated!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
                                           ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
-                                      ),
-                                    );
+                                      );
+                                    } else {
+                                      await ComfortRoomsRecord.collection
+                                          .doc()
+                                          .set(createComfortRoomsRecordData(
+                                            sockets: int.tryParse(_model
+                                                .socketsTextController.text),
+                                            hotel: FFAppState().hotel,
+                                            description:
+                                                functions.startBigLetter(_model
+                                                    .descriptionTextController
+                                                    .text),
+                                          ));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'CR lighting created!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    }
+
+                                    Navigator.pop(context);
                                   } else {
-                                    await ComfortRoomsRecord.collection
-                                        .doc()
-                                        .set(createComfortRoomsRecordData(
-                                          sockets: int.tryParse(_model
-                                              .socketsTextController.text),
-                                          hotel: FFAppState().hotel,
-                                          description: functions.startBigLetter(
-                                              _model.descriptionTextController
-                                                  .text),
-                                        ));
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'CR lighting created!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
                                   }
-
-                                  Navigator.pop(context);
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

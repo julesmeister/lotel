@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'name_edit_model.dart';
 export 'name_edit_model.dart';
 
@@ -42,8 +43,12 @@ class _NameEditWidgetState extends State<NameEditWidget> {
       safeSetState(() {});
       safeSetState(() {
         _model.nameTextController?.text = _model.userToEdit!.displayName;
-        _model.nameTextController?.selection = TextSelection.collapsed(
-            offset: _model.nameTextController!.text.length);
+        _model.nameFocusNode?.requestFocus();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _model.nameTextController?.selection = TextSelection.collapsed(
+            offset: _model.nameTextController!.text.length,
+          );
+        });
       });
     });
 
@@ -62,6 +67,8 @@ class _NameEditWidgetState extends State<NameEditWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -149,26 +156,45 @@ class _NameEditWidgetState extends State<NameEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await _model.user!.reference
-                                      .update(createUsersRecordData(
-                                    displayName: _model.nameTextController.text,
-                                  ));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'The name is now updated',
-                                        style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
+                                  if (FFAppState().role != 'demo') {
+                                    await _model.user!.reference
+                                        .update(createUsersRecordData(
+                                      displayName:
+                                          _model.nameTextController.text,
+                                    ));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'The name is now updated',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
                                         ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
                                       ),
-                                      duration: const Duration(milliseconds: 4000),
-                                      backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
-                                    ),
-                                  );
-                                  Navigator.pop(context);
+                                    );
+                                    Navigator.pop(context);
+                                  } else {
+                                    // inaccessible
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Inaccessible To Test User',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                        ),
+                                        duration: const Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

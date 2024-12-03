@@ -862,7 +862,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onDoubleTap: () async {
-                              if (_model.hotel != 'All') {
+                              if ((_model.hotel != 'All') &&
+                                  (FFAppState().role != 'demo')) {
                                 var confirmDialogResponse =
                                     await showDialog<bool>(
                                           context: context,
@@ -1266,7 +1267,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onDoubleTap: () async {
-                              if (_model.hotel != 'All') {
+                              if ((_model.hotel != 'All') &&
+                                  (FFAppState().role != 'demo')) {
                                 var confirmDialogResponse =
                                     await showDialog<bool>(
                                           context: context,
@@ -1619,7 +1621,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onDoubleTap: () async {
-                              if (_model.hotel != 'All') {
+                              if ((_model.hotel != 'All') &&
+                                  (FFAppState().role != 'demo')) {
                                 var confirmDialogResponse =
                                     await showDialog<bool>(
                                           context: context,
@@ -1932,7 +1935,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onDoubleTap: () async {
-                              if (_model.hotel != 'All') {
+                              if ((_model.hotel != 'All') &&
+                                  (FFAppState().role != 'demo')) {
                                 var confirmDialogResponse =
                                     await showDialog<bool>(
                                           context: context,
@@ -2336,7 +2340,8 @@ class _MetricsWidgetState extends State<MetricsWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
-                              if (_model.hotel != 'All') {
+                              if ((_model.hotel != 'All') &&
+                                  (FFAppState().role != 'demo')) {
                                 await showModalBottomSheet(
                                   isScrollControlled: true,
                                   backgroundColor: Colors.transparent,

@@ -49,20 +49,32 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
         // set name
         safeSetState(() {
           _model.nameTextController?.text = widget.name!;
-          _model.nameTextController?.selection = TextSelection.collapsed(
-              offset: _model.nameTextController!.text.length);
+          _model.nameFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.nameTextController?.selection = TextSelection.collapsed(
+              offset: _model.nameTextController!.text.length,
+            );
+          });
         });
         // set sss
         safeSetState(() {
           _model.sssTextController?.text = widget.sss!.toString();
-          _model.sssTextController?.selection = TextSelection.collapsed(
-              offset: _model.sssTextController!.text.length);
+          _model.sssFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.sssTextController?.selection = TextSelection.collapsed(
+              offset: _model.sssTextController!.text.length,
+            );
+          });
         });
         // set rate
         safeSetState(() {
           _model.rateTextController?.text = widget.weeklyRate!.toString();
-          _model.rateTextController?.selection = TextSelection.collapsed(
-              offset: _model.rateTextController!.text.length);
+          _model.rateFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.rateTextController?.selection = TextSelection.collapsed(
+              offset: _model.rateTextController!.text.length,
+            );
+          });
         });
       }
     });
@@ -386,65 +398,87 @@ class _StaffAddEditWidgetState extends State<StaffAddEditWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.edit == false) {
-                                    // create staff
+                                  if (FFAppState().role != 'demo') {
+                                    if (widget.edit == false) {
+                                      // create staff
 
-                                    var staffsRecordReference =
-                                        StaffsRecord.collection.doc();
-                                    await staffsRecordReference
-                                        .set(createStaffsRecordData(
-                                      hotel: FFAppState().hotel,
-                                      name: _model.nameTextController.text,
-                                      weeklyRate: double.tryParse(
-                                          _model.rateTextController.text),
-                                      sssRate: double.tryParse(
-                                          _model.sssTextController.text),
-                                      fired: false,
-                                    ));
-                                    _model.createPayload =
-                                        StaffsRecord.getDocumentFromData(
-                                            createStaffsRecordData(
-                                              hotel: FFAppState().hotel,
-                                              name: _model
-                                                  .nameTextController.text,
-                                              weeklyRate: double.tryParse(_model
-                                                  .rateTextController.text),
-                                              sssRate: double.tryParse(_model
-                                                  .sssTextController.text),
-                                              fired: false,
+                                      var staffsRecordReference =
+                                          StaffsRecord.collection.doc();
+                                      await staffsRecordReference
+                                          .set(createStaffsRecordData(
+                                        hotel: FFAppState().hotel,
+                                        name: _model.nameTextController.text,
+                                        weeklyRate: double.tryParse(
+                                            _model.rateTextController.text),
+                                        sssRate: double.tryParse(
+                                            _model.sssTextController.text),
+                                        fired: false,
+                                      ));
+                                      _model.createPayload =
+                                          StaffsRecord.getDocumentFromData(
+                                              createStaffsRecordData(
+                                                hotel: FFAppState().hotel,
+                                                name: _model
+                                                    .nameTextController.text,
+                                                weeklyRate: double.tryParse(
+                                                    _model.rateTextController
+                                                        .text),
+                                                sssRate: double.tryParse(_model
+                                                    .sssTextController.text),
+                                                fired: false,
+                                              ),
+                                              staffsRecordReference);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'New Staff Added!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
                                             ),
-                                            staffsRecordReference);
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    } else {
+                                      // update staff
+
+                                      await widget.staffRef!
+                                          .update(createStaffsRecordData(
+                                        weeklyRate: double.tryParse(
+                                            _model.rateTextController.text),
+                                        sssRate: double.tryParse(
+                                            _model.sssTextController.text),
+                                        name: _model.nameTextController.text,
+                                      ));
+                                    }
+
+                                    Navigator.pop(context);
+
+                                    safeSetState(() {});
+                                  } else {
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'New Staff Added!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
-                                  } else {
-                                    // update staff
-
-                                    await widget.staffRef!
-                                        .update(createStaffsRecordData(
-                                      weeklyRate: double.tryParse(
-                                          _model.rateTextController.text),
-                                      sssRate: double.tryParse(
-                                          _model.sssTextController.text),
-                                      name: _model.nameTextController.text,
-                                    ));
                                   }
-
-                                  Navigator.pop(context);
-
-                                  safeSetState(() {});
 
                                   safeSetState(() {});
                                 },

@@ -219,34 +219,37 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                     borderRadius: 24.0,
                     borderWidth: 1.0,
                     buttonSize: 60.0,
+                    disabledIconColor: FlutterFlowTheme.of(context).alternate,
                     icon: Icon(
                       Icons.add,
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (dialogContext) {
-                          return Dialog(
-                            elevation: 0,
-                            insetPadding: EdgeInsets.zero,
-                            backgroundColor: Colors.transparent,
-                            alignment: const AlignmentDirectional(0.0, 0.0)
-                                .resolve(Directionality.of(context)),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  FocusScope.of(dialogContext).unfocus(),
-                              child: const SizedBox(
-                                height: double.infinity,
-                                width: double.infinity,
-                                child: RecordAddEditWidget(),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                    onPressed: (FFAppState().role == 'demo')
+                        ? null
+                        : () async {
+                            await showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return Dialog(
+                                  elevation: 0,
+                                  insetPadding: EdgeInsets.zero,
+                                  backgroundColor: Colors.transparent,
+                                  alignment: const AlignmentDirectional(0.0, 0.0)
+                                      .resolve(Directionality.of(context)),
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        FocusScope.of(dialogContext).unfocus(),
+                                    child: const SizedBox(
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      child: RecordAddEditWidget(),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                   ),
                 ),
               ],
@@ -512,49 +515,68 @@ class _RecordsListWidgetState extends State<RecordsListWidget>
                                 ).then((value) => safeSetState(() {}));
                               },
                               onDoubleTap: () async {
-                                if (recordsItem.receivedBy == '') {
-                                  var confirmDialogResponse =
-                                      await showDialog<bool>(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: const Text('Received'),
-                                                content: const Text(
-                                                    'Are you the one who received this item?'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext,
-                                                            false),
-                                                    child: const Text('No'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext,
-                                                            true),
-                                                    child: const Text('Yes'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          ) ??
-                                          false;
-                                  if (confirmDialogResponse) {
-                                    // received
+                                if (FFAppState().role != 'demo') {
+                                  if (recordsItem.receivedBy == '') {
+                                    var confirmDialogResponse =
+                                        await showDialog<bool>(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  title: const Text('Received'),
+                                                  content: const Text(
+                                                      'Are you the one who received this item?'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              false),
+                                                      child: const Text('No'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              true),
+                                                      child: const Text('Yes'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ) ??
+                                            false;
+                                    if (confirmDialogResponse) {
+                                      // received
 
-                                    await recordsItem.reference.update({
-                                      ...createRecordsRecordData(
-                                        receivedBy: currentUserDisplayName,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                        },
-                                      ),
-                                    });
+                                      await recordsItem.reference.update({
+                                        ...createRecordsRecordData(
+                                          receivedBy: currentUserDisplayName,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                    }
                                   }
+                                } else {
+                                  // inaccessible
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Inaccessible To Test User',
+                                        style: TextStyle(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                        ),
+                                      ),
+                                      duration: const Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context).error,
+                                    ),
+                                  );
                                 }
                               },
                               child: Container(

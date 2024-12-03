@@ -38,15 +38,23 @@ class _PromoWidgetState extends State<PromoWidget> {
         // set detail
         safeSetState(() {
           _model.detailTextController?.text = _model.settings!.promoDetail;
-          _model.detailTextController?.selection = TextSelection.collapsed(
-              offset: _model.detailTextController!.text.length);
+          _model.detailFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.detailTextController?.selection = TextSelection.collapsed(
+              offset: _model.detailTextController!.text.length,
+            );
+          });
         });
         // set percent
         safeSetState(() {
           _model.percentTextController?.text =
               _model.settings!.promoPercent.toString();
-          _model.percentTextController?.selection = TextSelection.collapsed(
-              offset: _model.percentTextController!.text.length);
+          _model.percentFocusNode?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.percentTextController?.selection = TextSelection.collapsed(
+              offset: _model.percentTextController!.text.length,
+            );
+          });
         });
         // on toggle
         safeSetState(() {
@@ -335,46 +343,83 @@ class _PromoWidgetState extends State<PromoWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (_model.promoOn) {
-                                    if ((_model.detailTextController.text !=
-                                                '') &&
-                                        (_model.percentTextController.text !=
-                                                '')) {
-                                      // update promo
+                                  if (FFAppState().role != 'demo') {
+                                    if (_model.promoOn) {
+                                      if ((_model.detailTextController
+                                                      .text !=
+                                                  '') &&
+                                          (_model.percentTextController
+                                                      .text !=
+                                                  '')) {
+                                        // update promo
 
-                                      await FFAppState()
-                                          .settingRef!
-                                          .update(createHotelSettingsRecordData(
-                                            promoOn: _model.promoOn,
-                                            promoDetail: _model
-                                                .detailTextController.text,
-                                            promoPercent: double.tryParse(_model
-                                                .percentTextController.text),
-                                          ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'A promo is ongoing!',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
+                                        await FFAppState().settingRef!.update(
+                                                createHotelSettingsRecordData(
+                                              promoOn: _model.promoOn,
+                                              promoDetail: _model
+                                                  .detailTextController.text,
+                                              promoPercent: double.tryParse(
+                                                  _model.percentTextController
+                                                      .text),
+                                            ));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'A promo is ongoing!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
                                             ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary,
                                           ),
-                                          duration:
-                                              const Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Missing fields!',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                              ),
+                                            ),
+                                            duration:
+                                                const Duration(milliseconds: 4000),
+                                            backgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .error,
+                                          ),
+                                        );
+                                        return;
+                                      }
                                     } else {
+                                      // off
+
+                                      await FFAppState().settingRef!.update({
+                                        ...createHotelSettingsRecordData(
+                                          promoOn: _model.promoOn,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'promoPercent': FieldValue.delete(),
+                                            'promoDetail': FieldValue.delete(),
+                                          },
+                                        ),
+                                      });
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'Missing fields!',
+                                            'Promo has ended!',
                                             style: TextStyle(
                                               color:
                                                   FlutterFlowTheme.of(context)
@@ -388,29 +433,18 @@ class _PromoWidgetState extends State<PromoWidget> {
                                                   .error,
                                         ),
                                       );
-                                      return;
                                     }
-                                  } else {
-                                    // off
 
-                                    await FFAppState().settingRef!.update({
-                                      ...createHotelSettingsRecordData(
-                                        promoOn: _model.promoOn,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'promoPercent': FieldValue.delete(),
-                                          'promoDetail': FieldValue.delete(),
-                                        },
-                                      ),
-                                    });
+                                    Navigator.pop(context);
+                                  } else {
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Promo has ended!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .info,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
@@ -419,8 +453,6 @@ class _PromoWidgetState extends State<PromoWidget> {
                                       ),
                                     );
                                   }
-
-                                  Navigator.pop(context);
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

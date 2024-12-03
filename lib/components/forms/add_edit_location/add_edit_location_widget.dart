@@ -179,13 +179,19 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                                             .text) -
                                                         1)
                                                     .toString());
-                                                _model.socketsTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .socketsTextController!
-                                                            .text
-                                                            .length);
+                                                _model.socketsFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.socketsTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .socketsTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '-';
                                               safeSetState(() {});
@@ -253,13 +259,19 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                                             .text) +
                                                         1)
                                                     .toString());
-                                                _model.socketsTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .socketsTextController!
-                                                            .text
-                                                            .length);
+                                                _model.socketsFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.socketsTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .socketsTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '+';
                                               safeSetState(() {});
@@ -493,72 +505,97 @@ class _AddEditLocationWidgetState extends State<AddEditLocationWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (widget.location != null) {
-                                    await widget.location!.reference
-                                        .update(createLocationsRecordData(
-                                      sockets: int.tryParse(
-                                          _model.socketsTextController.text),
-                                      withCR: _model.crValue,
-                                      description: functions.startBigLetter(
-                                          _model.locationTextController.text),
-                                    ));
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Location updated!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                  if (FFAppState().role != 'demo') {
+                                    if (widget.location != null) {
+                                      await widget.location!.reference
+                                          .update(createLocationsRecordData(
+                                        sockets: int.tryParse(
+                                            _model.socketsTextController.text),
+                                        withCR: _model.crValue,
+                                        description: functions.startBigLetter(
+                                            _model.locationTextController.text),
+                                      ));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Location updated!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
                                           ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
-                                      ),
-                                    );
-                                  } else {
-                                    await LocationsRecord.collection
-                                        .doc()
-                                        .set(createLocationsRecordData(
-                                          description: functions.startBigLetter(
-                                              _model
-                                                  .locationTextController.text),
-                                          hotel: FFAppState().hotel,
-                                          sockets: int.tryParse(_model
-                                              .socketsTextController.text),
-                                          withCR: _model.crValue,
-                                        ));
-                                    if (_model.crValue!) {
-                                      // create CR
-
-                                      await ComfortRoomsRecord.collection
+                                      );
+                                    } else {
+                                      await LocationsRecord.collection
                                           .doc()
-                                          .set(createComfortRoomsRecordData(
-                                            sockets: 1,
-                                            hotel: FFAppState().hotel,
+                                          .set(createLocationsRecordData(
                                             description:
-                                                'CR of ${functions.startBigLetter(_model.locationTextController.text)}',
+                                                functions.startBigLetter(_model
+                                                    .locationTextController
+                                                    .text),
+                                            hotel: FFAppState().hotel,
+                                            sockets: int.tryParse(_model
+                                                .socketsTextController.text),
+                                            withCR: _model.crValue,
                                           ));
+                                      if (_model.crValue!) {
+                                        // create CR
+
+                                        await ComfortRoomsRecord.collection
+                                            .doc()
+                                            .set(createComfortRoomsRecordData(
+                                              sockets: 1,
+                                              hotel: FFAppState().hotel,
+                                              description:
+                                                  'CR of ${functions.startBigLetter(_model.locationTextController.text)}',
+                                            ));
+                                      }
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'A new location has been added!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
                                     }
+
+                                    Navigator.pop(context);
+                                  } else {
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'A new location has been added!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
                                   }
-
-                                  Navigator.pop(context);
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,

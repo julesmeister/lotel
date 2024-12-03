@@ -340,7 +340,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget>
                                 labelColor:
                                     FlutterFlowTheme.of(context).primaryText,
                                 unselectedLabelColor:
-                                    FlutterFlowTheme.of(context).primaryText,
+                                    FlutterFlowTheme.of(context).secondaryText,
                                 backgroundColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
                                 unselectedBackgroundColor:

@@ -193,7 +193,8 @@ class _BillFormWidgetState extends State<BillFormWidget>
                       color: FlutterFlowTheme.of(context).primaryText,
                       size: 24.0,
                     ),
-                    onPressed: _model.disableSubmit
+                    onPressed: (_model.disableSubmit &&
+                            (FFAppState().role == 'demo'))
                         ? null
                         : () async {
                             if ((_model.amountTextController.text != '') &&
@@ -747,12 +748,15 @@ class _BillFormWidgetState extends State<BillFormWidget>
                                 safeSetState(() {
                                   _model.descriptionTextController?.text =
                                       _model.choicesValue!;
-                                  _model.descriptionTextController?.selection =
-                                      TextSelection.collapsed(
-                                          offset: _model
-                                              .descriptionTextController!
-                                              .text
-                                              .length);
+                                  _model.descriptionFocusNode?.requestFocus();
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    _model.descriptionTextController
+                                        ?.selection = TextSelection.collapsed(
+                                      offset: _model.descriptionTextController!
+                                          .text.length,
+                                    );
+                                  });
                                 });
                               },
                               selectedChipStyle: ChipStyle(

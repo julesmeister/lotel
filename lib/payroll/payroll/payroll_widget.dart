@@ -1318,7 +1318,7 @@ class _PayrollWidgetState extends State<PayrollWidget>
                                                                       style:
                                                                           TextStyle(
                                                                         color: FlutterFlowTheme.of(context)
-                                                                            .primary,
+                                                                            .primaryText,
                                                                         fontWeight:
                                                                             FontWeight.bold,
                                                                       ),

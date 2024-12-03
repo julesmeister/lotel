@@ -183,13 +183,19 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                             .text) -
                                                         1)
                                                     .toString());
-                                                _model.numberTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .numberTextController!
-                                                            .text
-                                                            .length);
+                                                _model.numberFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.numberTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .numberTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '-';
                                               safeSetState(() {});
@@ -258,13 +264,19 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                             .text) +
                                                         1)
                                                     .toString());
-                                                _model.numberTextController
-                                                        ?.selection =
-                                                    TextSelection.collapsed(
-                                                        offset: _model
-                                                            .numberTextController!
-                                                            .text
-                                                            .length);
+                                                _model.numberFocusNode
+                                                    ?.requestFocus();
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  _model.numberTextController
+                                                          ?.selection =
+                                                      TextSelection.collapsed(
+                                                    offset: _model
+                                                        .numberTextController!
+                                                        .text
+                                                        .length,
+                                                  );
+                                                });
                                               });
                                               _model.operator = '+';
                                               safeSetState(() {});
@@ -498,164 +510,50 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  if (((String additional) {
-                                        return int.tryParse(additional) != null;
-                                      }(_model.numberTextController.text)) &&
-                                      (_model.numberTextController.text !=
-                                          '0')) {
-                                    // history
+                                  if (FFAppState().role != 'demo') {
+                                    if (((String additional) {
+                                          return int.tryParse(additional) !=
+                                              null;
+                                        }(_model.numberTextController.text)) &&
+                                        (_model.numberTextController.text !=
+                                            '0')) {
+                                      // history
 
-                                    await HistoryRecord.createDoc(
-                                            widget.booking!.room!)
-                                        .set({
-                                      ...createHistoryRecordData(
-                                        description: (String additional,
-                                                String existing) {
-                                          return (int.tryParse(additional) ??
-                                                      0) >
-                                                  0
-                                              ? '$additional beds added'
-                                              : '$additional beds removed';
-                                        }(_model.numberTextController.text,
-                                            widget.booking!.extraBeds),
-                                        staff: currentUserReference,
-                                        booking: widget.booking?.reference,
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                        },
-                                      ),
-                                    });
-                                    // room
-                                    _model.room =
-                                        await RoomsRecord.getDocumentOnce(
-                                            widget.booking!.room!);
-                                    // create transaction
+                                      await HistoryRecord.createDoc(
+                                              widget.booking!.room!)
+                                          .set({
+                                        ...createHistoryRecordData(
+                                          description: (String additional,
+                                                  String existing) {
+                                            return (int.tryParse(additional) ??
+                                                        0) >
+                                                    0
+                                                ? '$additional beds added'
+                                                : '$additional beds removed';
+                                          }(_model.numberTextController.text,
+                                              widget.booking!.extraBeds),
+                                          staff: currentUserReference,
+                                          booking: widget.booking?.reference,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                      // room
+                                      _model.room =
+                                          await RoomsRecord.getDocumentOnce(
+                                              widget.booking!.room!);
+                                      // create transaction
 
-                                    var transactionsRecordReference =
-                                        TransactionsRecord.collection.doc();
-                                    await transactionsRecordReference.set({
-                                      ...createTransactionsRecordData(
-                                        staff: currentUserReference,
-                                        total: (_model.promoPercent != 0.0
-                                                ? ((_model.bedPrice -
-                                                        (_model.bedPrice *
-                                                            _model
-                                                                .promoPercent /
-                                                            100))
-                                                    .toInt()
-                                                    .toDouble())
-                                                : ((double price,
-                                                        String ability) {
-                                                    return (ability != "normal")
-                                                        ? (price * 0.8)
-                                                        : (price);
-                                                  }(
-                                                    _model.bedPrice,
-                                                    valueOrDefault<String>(
-                                                      widget.booking?.ability,
-                                                      'normal',
-                                                    )))) *
-                                            int.parse(_model
-                                                .numberTextController.text),
-                                        hotel: FFAppState().hotel,
-                                        type: 'book',
-                                        remitted: false,
-                                        pending: widget.booking?.status ==
-                                            'pending',
-                                        room: _model.room?.number,
-                                        booking: widget.booking?.reference,
-                                        description: (String additional,
-                                                String existing, int room) {
-                                          return '${(int.tryParse(additional) ??
-                                                          0) >
-                                                      0
-                                                  ? '$additional beds added'
-                                                  : '$additional beds removed'} on room $room';
-                                        }(
-                                            _model.numberTextController.text,
-                                            widget.booking!.extraBeds,
-                                            _model.room!.number),
-                                        guests:
-                                            int.parse(widget.booking!.guests),
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': FieldValue.serverTimestamp(),
-                                        },
-                                      ),
-                                    });
-                                    _model.trans =
-                                        TransactionsRecord.getDocumentFromData({
-                                      ...createTransactionsRecordData(
-                                        staff: currentUserReference,
-                                        total: (_model.promoPercent != 0.0
-                                                ? ((_model.bedPrice -
-                                                        (_model.bedPrice *
-                                                            _model
-                                                                .promoPercent /
-                                                            100))
-                                                    .toInt()
-                                                    .toDouble())
-                                                : ((double price,
-                                                        String ability) {
-                                                    return (ability != "normal")
-                                                        ? (price * 0.8)
-                                                        : (price);
-                                                  }(
-                                                    _model.bedPrice,
-                                                    valueOrDefault<String>(
-                                                      widget.booking?.ability,
-                                                      'normal',
-                                                    )))) *
-                                            int.parse(_model
-                                                .numberTextController.text),
-                                        hotel: FFAppState().hotel,
-                                        type: 'book',
-                                        remitted: false,
-                                        pending: widget.booking?.status ==
-                                            'pending',
-                                        room: _model.room?.number,
-                                        booking: widget.booking?.reference,
-                                        description: (String additional,
-                                                String existing, int room) {
-                                          return '${(int.tryParse(additional) ??
-                                                          0) >
-                                                      0
-                                                  ? '$additional beds added'
-                                                  : '$additional beds removed'} on room $room';
-                                        }(
-                                            _model.numberTextController.text,
-                                            widget.booking!.extraBeds,
-                                            _model.room!.number),
-                                        guests:
-                                            int.parse(widget.booking!.guests),
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'date': DateTime.now(),
-                                        },
-                                      ),
-                                    }, transactionsRecordReference);
-                                    // update booking total + transactions
-
-                                    await widget.booking!.reference.update({
-                                      ...createBookingsRecordData(
-                                        extraBeds: (int.parse(_model
-                                                    .numberTextController
-                                                    .text) +
-                                                int.parse(
-                                                    widget.booking!.extraBeds))
-                                            .toString(),
-                                      ),
-                                      ...mapToFirestore(
-                                        {
-                                          'transactions': FieldValue.arrayUnion(
-                                              [_model.trans?.reference]),
-                                          'total': FieldValue.increment((_model
-                                                          .promoPercent !=
-                                                      0.0
+                                      var transactionsRecordReference =
+                                          TransactionsRecord.collection.doc();
+                                      await transactionsRecordReference.set({
+                                        ...createTransactionsRecordData(
+                                          staff: currentUserReference,
+                                          total: (_model.promoPercent != 0.0
                                                   ? ((_model.bedPrice -
                                                           (_model.bedPrice *
                                                               _model
@@ -677,39 +575,186 @@ class _AddExtraBedWidgetState extends State<AddExtraBedWidget> {
                                                         'normal',
                                                       )))) *
                                               int.parse(_model
-                                                  .numberTextController.text)),
-                                        },
-                                      ),
-                                    });
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Extra bed has been updated!',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                          ),
+                                                  .numberTextController.text),
+                                          hotel: FFAppState().hotel,
+                                          type: 'book',
+                                          remitted: false,
+                                          pending: widget.booking?.status ==
+                                              'pending',
+                                          room: _model.room?.number,
+                                          booking: widget.booking?.reference,
+                                          description: (String additional,
+                                                  String existing, int room) {
+                                            return '${(int.tryParse(additional) ??
+                                                            0) >
+                                                        0
+                                                    ? '$additional beds added'
+                                                    : '$additional beds removed'} on room $room';
+                                          }(
+                                              _model.numberTextController.text,
+                                              widget.booking!.extraBeds,
+                                              _model.room!.number),
+                                          guests: int.parse(
+                                              widget.booking!.guests),
                                         ),
-                                        duration: const Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
-                                      ),
-                                    );
-                                    Navigator.pop(context);
+                                        ...mapToFirestore(
+                                          {
+                                            'date':
+                                                FieldValue.serverTimestamp(),
+                                          },
+                                        ),
+                                      });
+                                      _model.trans = TransactionsRecord
+                                          .getDocumentFromData({
+                                        ...createTransactionsRecordData(
+                                          staff: currentUserReference,
+                                          total: (_model.promoPercent != 0.0
+                                                  ? ((_model.bedPrice -
+                                                          (_model.bedPrice *
+                                                              _model
+                                                                  .promoPercent /
+                                                              100))
+                                                      .toInt()
+                                                      .toDouble())
+                                                  : ((double price,
+                                                          String ability) {
+                                                      return (ability !=
+                                                              "normal")
+                                                          ? (price * 0.8)
+                                                          : (price);
+                                                    }(
+                                                      _model.bedPrice,
+                                                      valueOrDefault<String>(
+                                                        widget
+                                                            .booking?.ability,
+                                                        'normal',
+                                                      )))) *
+                                              int.parse(_model
+                                                  .numberTextController.text),
+                                          hotel: FFAppState().hotel,
+                                          type: 'book',
+                                          remitted: false,
+                                          pending: widget.booking?.status ==
+                                              'pending',
+                                          room: _model.room?.number,
+                                          booking: widget.booking?.reference,
+                                          description: (String additional,
+                                                  String existing, int room) {
+                                            return '${(int.tryParse(additional) ??
+                                                            0) >
+                                                        0
+                                                    ? '$additional beds added'
+                                                    : '$additional beds removed'} on room $room';
+                                          }(
+                                              _model.numberTextController.text,
+                                              widget.booking!.extraBeds,
+                                              _model.room!.number),
+                                          guests: int.parse(
+                                              widget.booking!.guests),
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'date': DateTime.now(),
+                                          },
+                                        ),
+                                      }, transactionsRecordReference);
+                                      // update booking total + transactions
+
+                                      await widget.booking!.reference.update({
+                                        ...createBookingsRecordData(
+                                          extraBeds: (int.parse(_model
+                                                      .numberTextController
+                                                      .text) +
+                                                  int.parse(widget
+                                                      .booking!.extraBeds))
+                                              .toString(),
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'transactions':
+                                                FieldValue.arrayUnion(
+                                                    [_model.trans?.reference]),
+                                            'total': FieldValue.increment((_model
+                                                            .promoPercent !=
+                                                        0.0
+                                                    ? ((_model.bedPrice -
+                                                            (_model.bedPrice *
+                                                                _model
+                                                                    .promoPercent /
+                                                                100))
+                                                        .toInt()
+                                                        .toDouble())
+                                                    : ((double price,
+                                                            String ability) {
+                                                        return (ability !=
+                                                                "normal")
+                                                            ? (price * 0.8)
+                                                            : (price);
+                                                      }(
+                                                        _model.bedPrice,
+                                                        valueOrDefault<String>(
+                                                          widget
+                                                              .booking?.ability,
+                                                          'normal',
+                                                        )))) *
+                                                int.parse(_model
+                                                    .numberTextController
+                                                    .text)),
+                                          },
+                                        ),
+                                      });
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Extra bed has been updated!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                      Navigator.pop(context);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Enter a correct value!',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .error,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context).info,
+                                        ),
+                                      );
+                                    }
                                   } else {
+                                    // inaccessible
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Enter a correct value!',
+                                          'Inaccessible To Test User',
                                           style: TextStyle(
                                             color: FlutterFlowTheme.of(context)
-                                                .error,
+                                                .secondaryBackground,
                                           ),
                                         ),
                                         duration: const Duration(milliseconds: 4000),
                                         backgroundColor:
-                                            FlutterFlowTheme.of(context).info,
+                                            FlutterFlowTheme.of(context).error,
                                       ),
                                     );
                                   }
